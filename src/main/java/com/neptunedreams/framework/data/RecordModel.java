@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
  * <p>Created by IntelliJ IDEA.
@@ -24,7 +25,7 @@ public class RecordModel<R> implements Serializable {
   private List<@NonNull R> foundItems = new ArrayList<>();
   private int recordIndex = 0;
   private final Supplier<@NonNull R> constructor;
-  private @NonNull Function<R, Integer> getIdFunction;
+  private @Nullable Function<R, Integer> getIdFunction;
 
   public RecordModel(Supplier<@NonNull R> theConstructor, @NonNull Function<R, Integer> getIdFunction) {
     constructor = theConstructor;
