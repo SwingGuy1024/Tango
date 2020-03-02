@@ -38,11 +38,12 @@ public final class QueuedTask<I, R> {
   private final ParameterizedCallable<I, R> callable;
   private final long delayMilliSeconds;
   private final Consumer<R> consumer;
-  @SuppressWarnings("type.argument.type.incompatible") // The warning makes no sense at all:
+//  @SuppressWarnings("type.argument.type.incompatible") // The warning makes no sense at all:
   // found   : I[ extends @Initialized @Nullable Object super @Initialized @NonNull Void]
   //[ERROR] required: @Initialized @NonNull Object
   private final BlockingQueue<I> queue = new SynchronousQueue<>();
 
+  @SuppressWarnings("BoundedWildcard")
   public QueuedTask(long delay, ParameterizedCallable<I, R> task, Consumer<R> theConsumer) {
     delayMilliSeconds = delay;
     callable = task;

@@ -25,7 +25,7 @@ public class RecordModel<R> implements Serializable {
   private List<@NonNull R> foundItems = new ArrayList<>();
   private int recordIndex = 0;
   private final Supplier<@NonNull R> constructor;
-  private @Nullable Function<R, Integer> getIdFunction;
+  private @NonNull Function<R, Integer> getIdFunction;
 
   public RecordModel(Supplier<@NonNull R> theConstructor, @NonNull Function<R, Integer> getIdFunction) {
     constructor = theConstructor;
