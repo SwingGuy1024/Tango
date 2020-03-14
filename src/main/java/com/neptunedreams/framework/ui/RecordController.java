@@ -24,7 +24,7 @@ import org.checkerframework.checker.nullness.qual.NonNull;
  *
  * @author Miguel Mu\u00f1oz
  */
-@SuppressWarnings({"WeakerAccess", "HardCodedStringLiteral"})
+//@SuppressWarnings({"WeakerAccess", "HardCodedStringLiteral"})
 public class RecordController<R, PK, F extends DBField> implements RecordModelListener {
   private static final Integer ZERO = 0;
   // For DerbyRecordDao, E was Record.FIELD
@@ -35,7 +35,7 @@ public class RecordController<R, PK, F extends DBField> implements RecordModelLi
   @NotOnlyInitialized
   private final RecordModel<R> model;
 
-  @SuppressWarnings("argument.type.incompatible")
+//  @SuppressWarnings("argument.type.incompatible")
   public RecordController(
       Dao<R, PK, F> theDao,
       RecordSelectionModel<? extends R> recordSelectionModel,

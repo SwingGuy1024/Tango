@@ -131,7 +131,7 @@ public final class SwipeView<C extends JComponent> extends LayerUI<C> {
   }
 
   private void animate() {
-    @SuppressWarnings("argument.type.incompatible")    // Stub this out!
+//    @SuppressWarnings("argument.type.incompatible")    // Stub this out!
     Timer timer = new Timer(frameMillis, null);
     final ActionListener actionListener = (evt) -> {
       frame++;
@@ -161,7 +161,7 @@ public final class SwipeView<C extends JComponent> extends LayerUI<C> {
    * @param operation The code to execute when the mouse is down.
    * @param swipeRight True for swipeRight, false for swipe left
    */
-  @SuppressWarnings("WeakerAccess")
+//  @SuppressWarnings("WeakerAccess")
   public void assignMouseDownAction(AbstractButton button, Runnable operation, SwipeDirection swipeRight) {
     MouseTracker mouseTracker = new MouseTracker(operation, swipeRight);
     button.addMouseListener(mouseTracker);
@@ -170,7 +170,7 @@ public final class SwipeView<C extends JComponent> extends LayerUI<C> {
   private class MouseTracker extends MouseAdapter {
     private boolean active = false;
     private boolean tracking = false;
-    @SuppressWarnings("argument.type.incompatible") // Stub this out!
+//    @SuppressWarnings("argument.type.incompatible") // Stub this out!
     private final Timer timer = new Timer(frameMillis, null);
 
     MouseTracker(Runnable operation, SwipeDirection swipeDirection) {

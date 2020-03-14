@@ -62,7 +62,7 @@ public enum SwingUtils {
    *
    * @param component The component
    */
-  @SuppressWarnings("argument.type.incompatible")
+//  @SuppressWarnings("argument.type.incompatible")
   public static void setNoBorder(JComponent component) {
     component.setBorder(null);
   }

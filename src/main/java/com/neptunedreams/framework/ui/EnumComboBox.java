@@ -16,7 +16,7 @@ import javax.swing.ListCellRenderer;
  */
 public class EnumComboBox<E extends Enum<E> & DisplayEnum> extends JComboBox<E> {
 
-  @SuppressWarnings({"method.invocation.invalid", "argument.type.incompatible"})
+//  @SuppressWarnings({"method.invocation.invalid", "argument.type.incompatible"})
   public EnumComboBox(E[] values) {
     super();
     @SuppressWarnings("unchecked")
@@ -41,7 +41,7 @@ public class EnumComboBox<E extends Enum<E> & DisplayEnum> extends JComboBox<E> 
     setRenderer(r);
   }
   
-  @SuppressWarnings("return.type.incompatible")
+//  @SuppressWarnings("return.type.incompatible")
   public E getSelected() {
     @SuppressWarnings("unchecked")
     final E selectedItem = (E) getModel().getSelectedItem();
