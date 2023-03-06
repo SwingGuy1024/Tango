@@ -2,6 +2,8 @@ package com.neptunedreams.framework.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.Container;
 import java.awt.FlowLayout;
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -15,6 +17,7 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.RootPaneContainer;
 import javax.swing.event.AncestorEvent;
 import javax.swing.event.AncestorListener;
 import javax.swing.text.Caret;
@@ -205,6 +208,41 @@ public enum TangoUtils {
     }
     component.setCaret(caret);
     caret.setBlinkRate(blinkRate); // Starts the new caret blinking.
+  }
+
+  /**
+   * Recurse through all child components of the specified top component looking for JTextComponents, such as JTextField and JTextArea,
+   * and replace their DefaultCaret with the Caret produced by the specified {@code caretSupplier}.
+   * For UIs that set a custom caret, as the AquaUI for Macintosh does, this will remove the behavior of the platform's default Caret.
+   * The AquaCaret, for example will preselect a component's text when the component receives the focus. Calling this method will remove
+   * that behavior if your caretSupplier does not produce a Caret with the same feature.
+   * @param topComponent The master component, such as the ContentPane of a JFrame.
+   * @param caretSupplier A supplier to create a StandardCaret for each JTextComponent.
+   */
+  public static void replaceAllCarets(Container topComponent, Supplier<Caret> caretSupplier) {
+    if (topComponent instanceof JTextComponent) {
+      JTextComponent tc = (JTextComponent) topComponent;
+      if (!(tc.getCaret() instanceof StandardCaret)) {
+        replaceCaret(tc, caretSupplier.get());
+      }
+    } else {
+      Component[] components = topComponent.getComponents();
+      for (Component c : components) {
+        if (c instanceof Container) {
+          Container container = (Container) c;
+          replaceAllCarets(container, caretSupplier);
+        }
+      }
+    }
+  }
+
+  /**
+   * 
+   * @param jFrameOrJDialog Frame or Dialog instance, as a RootPaneContainer
+   * @param caretSupplier Supplies the Caret. Each found component needs its own instance of Caret
+   */
+  public static void replaceAllCarets(RootPaneContainer jFrameOrJDialog, Supplier<Caret> caretSupplier) {
+    replaceAllCarets(jFrameOrJDialog.getContentPane(), caretSupplier);
   }
 
   /**

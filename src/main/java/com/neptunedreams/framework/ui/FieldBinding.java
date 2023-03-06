@@ -23,7 +23,7 @@ public abstract class FieldBinding<R, T, C extends Component> {
   private final Function<? super R, ? extends T> getter;
   private final C editor;
   private final boolean isEditable;
-  private static final Color DISABLED_COLOR = new Color(245, 245, 245);
+  private static final Color DISABLED_COLOR = new Color(0xEAEAEA);
 
   /**
    * Construct a FieldBinding
