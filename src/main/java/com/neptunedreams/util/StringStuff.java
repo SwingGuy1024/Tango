@@ -19,7 +19,7 @@ public enum StringStuff {
    * @param nullableString A String, which may be null
    * @return a not-null String, which will be empty if the input was null.
    */
-  public static String emptyIfNull(@Nullable String nullableString) {
+  public static @NonNull String emptyIfNull(@Nullable String nullableString) {
     return (nullableString == null) ? "" : nullableString;
   }
 
@@ -30,7 +30,7 @@ public enum StringStuff {
    * @param <T> The type of the collection or iterable
    * @return A non-null collection or iterable. Returns the same collection or iterable if it is not null.
    */
-  public static <T> Iterable<T> notNull(Iterable<T> iterable) {
+  public static <T> @NonNull Iterable<T> notNull(Iterable<T> iterable) {
     if (iterable == null) {
       return Collections.emptyList();
     }
@@ -45,6 +45,6 @@ public enum StringStuff {
   public static String[] splitText(@NonNull String text) {
     //noinspection EqualsReplaceableByObjectsCall
     assert text.trim().equals(text); // text should already be trimmed
-    return text.split("\\s+");
+    return text.split("\\s+"); // NON-NLS
   }
 }
