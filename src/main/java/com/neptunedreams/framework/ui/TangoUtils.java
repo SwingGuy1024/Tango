@@ -12,6 +12,8 @@ import java.awt.image.ImageProducer;
 import java.awt.image.RGBImageFilter;
 import java.beans.PropertyChangeListener;
 import java.util.function.Supplier;
+import javax.swing.AbstractButton;
+import javax.swing.Action;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
@@ -418,4 +420,30 @@ public enum TangoUtils {
     return color.getAlpha() * hsb[2] * hsb[2];
   }
 
+  /**
+   * Configures the button to use its text as its tool tip, and to not display its text otherwise.
+   * @param button The button to configure
+   * @param <B> The subclass of AbstractButton for the button
+   * @return button
+   */
+  public static <B extends AbstractButton> B configureTextFree(B button) {
+    Action buttonAction = button.getAction();
+    if (buttonAction != null) {
+      final Object value = buttonAction.getValue(Action.NAME);
+      if (value != null) {
+        String text = value.toString();
+        if (!text.isEmpty()) {
+          button.setToolTipText(text);
+        }
+        button.setHideActionText(true);
+      }
+    } else {
+      String text = button.getText();
+      if ((text != null) && !text.isEmpty()) {
+        button.setToolTipText(text);
+        button.setText("");
+      }
+    }
+    return button;
+  }
 }
