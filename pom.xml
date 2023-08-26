@@ -6,7 +6,7 @@
 
 	<groupId>com.neptunedreams</groupId>
 	<artifactId>tango</artifactId>
-	<version>2.0.19-SNAPSHOT</version>
+	<version>2.0.20-SNAPSHOT</version>
 	<name>Tango</name>
 	<packaging>jar</packaging>
 	
@@ -125,6 +125,9 @@
 				<version>3.8.1</version>
 			</plugin>
 
+			<!-- This shows as an error in IntelliJ. When I remove the plugin, the project doesn't build. I don't -->
+			<!-- understand, but I'm keeping this in place for now. I may need to update to the latest instructions -->
+			<!-- for how to use the checker framework with Maven: https://checkerframework.org/manual/#maven -->
 			<plugin>
 				<!--This is the Maven dependency plugin.-->
 				<groupId>org.apache.maven.plugins</groupId>

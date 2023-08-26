@@ -3,6 +3,7 @@ package com.neptunedreams.framework.event;
 import com.google.common.eventbus.DeadEvent;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
+import org.checkerframework.checker.nullness.qual.NonNull;
 
 /**
  * This class serves as a facade for the event bus. The event bus instance is private, and all methods to post an event
@@ -17,7 +18,7 @@ import com.google.common.eventbus.Subscribe;
  * <p>Date: 1/2/18
  * <p>Time: 12:38 AM
  *
- * @author Miguel Mu\u00f1oz
+ * @author Miguel Muñoz
  */
 public final class MasterEventBus {
   private MasterEventBus() {
@@ -25,7 +26,7 @@ public final class MasterEventBus {
   }
 
   @SuppressWarnings("HardCodedStringLiteral")
-  private static EventBus master = new EventBus("master");
+  private static final EventBus master = new EventBus("master");
 
   /**
    * Register an instance with the master event bus
@@ -85,7 +86,7 @@ public final class MasterEventBus {
    * @param record The affected record
    * @param <R> The type of the record
    */
-  public static <R> void postChangeRecordEvent(R record) {
+  public static <R> void postChangeRecordEvent(@NonNull R record) {
     master.post(new ChangeRecord<>(record));
   }
 

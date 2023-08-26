@@ -23,7 +23,7 @@ import org.checkerframework.checker.nullness.qual.NonNull;
  * <p>Date: 10/29/17
  * <p>Time: 11:27 AM
  *
- * @author Miguel Mu\u00f1oz
+ * @author Miguel Muñoz
  */
 @SuppressWarnings({"WeakerAccess", "HardCodedStringLiteral"})
 public final class RecordController<R, PK, F extends DBField> implements RecordModelListener {
@@ -99,7 +99,7 @@ public final class RecordController<R, PK, F extends DBField> implements RecordM
   }
 
   void saveCurrentRecord() {
-    R currentRecord = recordSelectionModel.getCurrentRecord(); // Move this back to where the comment is
+    @NonNull R currentRecord = recordSelectionModel.getCurrentRecord(); // Move this back to where the comment is
 
     if (recordSelectionModel.isRecordDataModified()) {
       try {
@@ -278,7 +278,7 @@ public final class RecordController<R, PK, F extends DBField> implements RecordM
    * @param selectedRecord The record to delete
    * @throws SQLException Most likely if the record is not found.
    */
-  public void delete(final R selectedRecord) throws SQLException {
+  public void delete(final @NonNull R selectedRecord) throws SQLException {
     dao.delete(selectedRecord);
   }
 }

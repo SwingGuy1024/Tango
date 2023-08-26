@@ -1,14 +1,16 @@
 package com.neptunedreams.framework.data;
 
+import org.checkerframework.checker.nullness.qual.NonNull;
+
 /**
  * <p>Created by IntelliJ IDEA.
  * <p>Date: 1/2/18
  * <p>Time: 12:33 AM
  *
- * @author Miguel Mu\u00f1oz
+ * @author Miguel Muñoz
  */
 public interface RecordSelectionModel<R> {
   
   boolean isRecordDataModified();
-  R getCurrentRecord();
+  @NonNull R getCurrentRecord();
 }

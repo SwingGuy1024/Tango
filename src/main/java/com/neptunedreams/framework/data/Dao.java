@@ -11,7 +11,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
  * <p>Date: 10/28/17
  * <p>Time: 6:52 PM
  *
- * @author Miguel Mu\u00f1oz
+ * @author Miguel Muñoz
  */
 public interface Dao<E, PK, F extends DBField> {
   boolean createTableIfNeeded() throws SQLException;
@@ -34,26 +34,26 @@ public interface Dao<E, PK, F extends DBField> {
 //   * @return True if the entity was new and was inserted, false if it updated an existing entry.
    * @throws SQLException Yeah, you know.
    */
-  void update(E entity) throws SQLException;
+  void update(@NonNull E entity) throws SQLException;
 
-  void insert(E entity) throws SQLException;
+  void insert(@NonNull E entity) throws SQLException;
 
   /**
    * insert or update the provided entity. If the id is 0 or null, it inserts the record. Otherwise it updates it.
    * @param entity The entity to save
    * @throws SQLException Sql exception
    */
-  void insertOrUpdate(E entity) throws SQLException;
+  void insertOrUpdate(@NonNull E entity) throws SQLException;
 
-  void delete(E entity) throws SQLException;
+  void delete(@NonNull E entity) throws SQLException;
   
   PK getNextId() throws SQLException;
   
-  PK getPrimaryKey(E entity);
+  PK getPrimaryKey(@NonNull E entity);
   
   int getTotal() throws SQLException;
 
-  void setPrimaryKey(E entity, PK primaryKey);
+  void setPrimaryKey(@NonNull E entity, PK primaryKey);
   
 //  <T> Collection<T> getTableInfo() throws SQLException;
 }
