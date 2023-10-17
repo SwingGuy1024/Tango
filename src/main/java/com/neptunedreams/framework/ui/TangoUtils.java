@@ -30,7 +30,7 @@ import javax.swing.text.JTextComponent;
  * <p>Date: 12/8/19
  * <p>Time: 3:15 PM
  *
- * @author Miguel Mu\u00f1oz
+ * @author Miguel Muñoz
  */
 public enum TangoUtils {
   ;
@@ -222,16 +222,14 @@ public enum TangoUtils {
    * @param caretSupplier A supplier to create a StandardCaret for each JTextComponent.
    */
   public static void replaceAllCarets(Container topComponent, Supplier<Caret> caretSupplier) {
-    if (topComponent instanceof JTextComponent) {
-      JTextComponent tc = (JTextComponent) topComponent;
+    if (topComponent instanceof JTextComponent tc) {
       if (!(tc.getCaret() instanceof StandardCaret)) {
         replaceCaret(tc, caretSupplier.get());
       }
     } else {
       Component[] components = topComponent.getComponents();
       for (Component c : components) {
-        if (c instanceof Container) {
-          Container container = (Container) c;
+        if (c instanceof Container container) {
           replaceAllCarets(container, caretSupplier);
         }
       }
@@ -387,10 +385,12 @@ public enum TangoUtils {
     ImageProducer prod = new FilteredImageSource(icon.getImage().getSource(), filter);
 
     // instantiates the image, but doesn't load it.
-    Image result = Toolkit.getDefaultToolkit().createImage(prod);
+    final Toolkit toolkit = Toolkit.getDefaultToolkit();
+    Image result = toolkit.createImage(prod);
     
     // Force the image to load
-    Toolkit.getDefaultToolkit().prepareImage(result, icon.getIconWidth(), icon.getIconHeight(), null);
+    @SuppressWarnings({"argument", "unused"}) // we only set success so we can annotate the call.
+    boolean success = toolkit.prepareImage(result, icon.getIconWidth(), icon.getIconHeight(), null);
 
     System.out.printf("Histogram Data model:%n"); // NON-NLS
     for (int i=0; i<hues.length; ++i) {

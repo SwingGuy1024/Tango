@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 import javax.swing.ButtonGroup;
 import javax.swing.ButtonModel;
@@ -23,7 +22,7 @@ import javax.swing.JRadioButton;
  * <p>Date: 12/28/17
  * <p>Time: 6:53 PM
  *
- * @author Miguel Mu\u00f1oz
+ * @author Miguel Muñoz
  */
 public final class EnumGroup<E extends DisplayEnum> {
   // Note: The bounds of the type of this class used to be this: <E extends Enum<E> & DisplayEnum>
@@ -106,16 +105,16 @@ public final class EnumGroup<E extends DisplayEnum> {
    * Thread safe method to get the selection.
    * @return The value assigned to the selected button
    */
+  @SuppressWarnings("return") // checker thinks the map's get() method may return null.
   public E getSelected() {
     ButtonModel selection = selectedModelRef.get();
-    //noinspection UseOfSystemOutOrSystemErr
     final String actionCommand = selection.getActionCommand();
-    //noinspection HardCodedStringLiteral,UseOfSystemOutOrSystemErr
-    return Objects.requireNonNull(textMap.get(actionCommand));
+    return textMap.get(actionCommand);
   }
   
+  @SuppressWarnings("argument") // Checker thinks group may be null.
   public void setSelected(E selectedValue) {
-    group.setSelected(Objects.requireNonNull(buttonMap.get(selectedValue)), true);
+    group.setSelected(buttonMap.get(selectedValue), true);
   }
   
   @SuppressWarnings("JavaDoc")

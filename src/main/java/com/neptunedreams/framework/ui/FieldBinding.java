@@ -7,6 +7,7 @@ import java.util.function.BiConsumer;
 import java.util.function.Function;
 import javax.swing.JLabel;
 import javax.swing.JTextArea;
+import javax.swing.UIManager;
 import javax.swing.text.JTextComponent;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
@@ -16,14 +17,15 @@ import org.checkerframework.checker.nullness.qual.Nullable;
  * <p>Date: 12/6/17
  * <p>Time: 12:03 AM
  *
- * @author Miguel Mu\u00f1oz
+ * @author Miguel Muñoz
  */
 @SuppressWarnings("unused")
 public abstract class FieldBinding<R, T, C extends Component> {
   private final Function<? super R, ? extends T> getter;
   private final C editor;
   private final boolean isEditable;
-  private static final Color DISABLED_COLOR = new Color(0xEAEAEA);
+  @SuppressWarnings("assignment") // Checker thinks getColor() may return null.
+  private static final Color DISABLED_COLOR = UIManager.getDefaults().getColor("TextField.inactiveBackground");
 
   /**
    * Construct a FieldBinding
@@ -132,6 +134,7 @@ public abstract class FieldBinding<R, T, C extends Component> {
   }
   
   public abstract static class EditableFieldBinding<R, T, C extends JTextComponent> extends FieldBinding<R, T, C> {
+    private static final Color ENABLED_COLOR = UIManager.getColor("TextField.background");
     private final BiConsumer<? super R, ? super T> setter;
     private final boolean editableState = false;
 
@@ -174,7 +177,7 @@ public abstract class FieldBinding<R, T, C extends Component> {
     public void setEditableState(boolean editableState) {
       final C editor = getEditor();
       editor.setEditable(editableState);
-      editor.setBackground(editableState? Color.white : DISABLED_COLOR);
+      editor.setBackground(editableState? ENABLED_COLOR : DISABLED_COLOR);
     }
 
     @Override

@@ -3,6 +3,7 @@ package com.neptunedreams.framework.ui;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeListener;
+import java.util.function.Consumer;
 import javax.swing.FocusManager;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -11,6 +12,8 @@ import javax.swing.JMenuItem;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 import javax.swing.text.JTextComponent;
+
+import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 /**
@@ -18,7 +21,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
  * <p>Date: 11/2/17
  * <p>Time: 11:43 PM
  *
- * @author Miguel Mu\u00f1oz
+ * @author Miguel Muñoz
  */
 @SuppressWarnings("HardCodedStringLiteral")
 public enum UIMenus implements CaretListener {
@@ -26,7 +29,6 @@ public enum UIMenus implements CaretListener {
 //  private Set<JTextComponent> registeredComponents = new HashSet<>();
 //  private JTextComponent selectedComponent;
   private final FocusManager focusManager = FocusManager.getCurrentManager();
-  @SuppressWarnings("NonFinalFieldInEnum")
   private @Nullable JTextComponent caretOwner = null;
   @SuppressWarnings({"HardCodedStringLiteral", "MagicCharacter"})
   private final MenuAction cutAction = new ClipboardAction("Cut", 'X', JTextComponent::cut);
@@ -43,12 +45,16 @@ public enum UIMenus implements CaretListener {
       if (permFocusOwner != caretOwner) {
         if (caretOwner != null) {
           removeCaretListener(caretOwner);
-          System.out.printf("deFocus c with %s to %s%n", caretOwner.getText(), (permFocusOwner == null) ? "None" : permFocusOwner.getClass().toString());
+          @SuppressWarnings("dereference.of.nullable") // makes no sense. caretOwner can't be null!
+          final String text = caretOwner.getText();
+          System.out.printf("deFocus c with %s to %s%n", text, (permFocusOwner == null) ? "None" : permFocusOwner.getClass().toString());
         }
         if (permFocusOwner instanceof JTextComponent) {
           caretOwner = (JTextComponent) permFocusOwner;
           addCaretListener(caretOwner);
-          System.out.printf("Focus c with %s%n", caretOwner.getText());
+          @SuppressWarnings("dereference.of.nullable") // makes no sense. caretOwner can't be null!
+          final String text = caretOwner.getText();
+          System.out.printf("Focus c with %s%n", text);
         }
       }
     };
@@ -56,11 +62,11 @@ public enum UIMenus implements CaretListener {
   }
   
   private final class ClipboardAction extends MenuAction {
-    private TextMenuOperation operation;
+    private final Consumer<JTextComponent> operation;
     private ClipboardAction(final String name, 
 //                           @Nullable final Icon icon, 
                            final char acceleratorKey, 
-                           TextMenuOperation operation) {
+                           Consumer<JTextComponent> operation) {
       super(name, null, acceleratorKey);
       this.operation = operation;
     }
@@ -68,9 +74,9 @@ public enum UIMenus implements CaretListener {
     @Override
     public void actionPerformed(final ActionEvent e) {
       Component focusOwner = focusManager.getPermanentFocusOwner();
-      if (focusOwner instanceof JTextComponent) {
-        JTextComponent textComponent = (JTextComponent) focusOwner; // It better be!
-        operation.perform(textComponent);
+      if (focusOwner instanceof JTextComponent textComponent) {
+        // It better be!
+        operation.accept(textComponent);
       }
     }
 
@@ -80,17 +86,12 @@ public enum UIMenus implements CaretListener {
       return (ClipboardAction) super.clone();
     }
   }
-  
-  @FunctionalInterface
-  private interface TextMenuOperation {
-    void perform(JTextComponent component);
-  }
 
   private void removeCaretListener(JTextComponent owner) {
     owner.removeCaretListener(this);
   }
   
-  private void addCaretListener(JTextComponent owner) {
+  private void addCaretListener(@NonNull JTextComponent owner) {
     owner.addCaretListener(this);
   }
   

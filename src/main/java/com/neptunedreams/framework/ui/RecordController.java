@@ -36,7 +36,7 @@ public final class RecordController<R, PK, F extends DBField> implements RecordM
   @NotOnlyInitialized
   private final RecordModel<R> model;
 
-  @SuppressWarnings("methodref.receiver.bound.invalid")
+  @SuppressWarnings("methodref.receiver.bound")
   private RecordController(
       Dao<R, PK, F> theDao,
       RecordSelectionModel<? extends R> recordSelectionModel,
@@ -156,9 +156,9 @@ public final class RecordController<R, PK, F extends DBField> implements RecordM
 
   /**
    * This executes on the event thread. It gets called when a search is done and new records are set.
-   * @param theFoundItems
+   * @param theFoundItems The records that were found.
    */
-  public void setFoundRecords(final Collection<@NonNull ? extends R> theFoundItems) {
+  public void setFoundRecords(final Collection<? extends @NonNull R> theFoundItems) {
     model.setNewList(theFoundItems);
     if (model.getSize() > 0) {
       final R selectedRecord = model.getFoundRecord();

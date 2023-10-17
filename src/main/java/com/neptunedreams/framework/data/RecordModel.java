@@ -14,7 +14,7 @@ import org.checkerframework.checker.nullness.qual.NonNull;
  * <p>Date: 10/29/17
  * <p>Time: 3:27 PM
  *
- * @author Miguel Mu\u00f1oz
+ * @author Miguel Muñoz
  */
 @SuppressWarnings({"WeakerAccess", "unused"})
 public class RecordModel<R> implements Serializable {
@@ -24,8 +24,7 @@ public class RecordModel<R> implements Serializable {
   private List<@NonNull R> foundItems = new ArrayList<>();
   private int recordIndex = 0;
   private final Supplier<@NonNull R> constructor;
-  private @NonNull Function<R, Integer> getIdFunction;
-  private boolean isDirectionForward = true;
+  private final @NonNull Function<R, Integer> getIdFunction;
 
   public RecordModel(Supplier<@NonNull R> theConstructor, @NonNull Function<R, Integer> getIdFunction) {
     constructor = theConstructor;
@@ -46,7 +45,7 @@ public class RecordModel<R> implements Serializable {
     listenerList.remove(listener);
   }
 
-  public void setNewList(Collection<? extends R> records) {
+  public void setNewList(Collection<? extends @NonNull R> records) {
     int priorSelectionId = (foundItems.size() > recordIndex) ? getIdFunction.apply(foundItems.get(recordIndex)) : 0;
     foundItems = new ArrayList<>(records);
     // Not sure if the "if" is needed, or if we can just always set the record index to zero.

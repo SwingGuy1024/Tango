@@ -1,6 +1,6 @@
 package com.neptunedreams.framework.ui;
 
-import java.awt.Rectangle;
+import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 import javax.swing.SwingUtilities;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.JTextComponent;
+
 import org.checkerframework.checker.initialization.qual.UnderInitialization;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.nullness.qual.RequiresNonNull;
@@ -29,7 +30,7 @@ import org.jetbrains.annotations.NotNull;
  * <p>Date: 4/4/20
  * <p>Time: 7:42 AM
  *
- * @author Miguel Mu\u00f1oz
+ * @author Miguel Muñoz
  */
 public class FieldIterator {
 //  @MonotonicNonNull
@@ -162,8 +163,8 @@ public class FieldIterator {
     int index = element.charIndex;
     container.select(index, index + element.termUpperCase.length());
     try {
-      Rectangle selectedRect = container.modelToView(index);
-      container.scrollRectToVisible(selectedRect);
+      Rectangle2D selectedRect = container.modelToView2D(index);
+      container.scrollRectToVisible(selectedRect.getBounds());
     } catch (BadLocationException e) {
       e.printStackTrace();
     }
@@ -199,10 +200,9 @@ public class FieldIterator {
 
     @Override
     public boolean equals(final @Nullable Object obj) {
-      if (!(obj instanceof SearchTermElement)) {
+      if (!(obj instanceof SearchTermElement that)) {
         return false;
       }
-      SearchTermElement that = (SearchTermElement) obj;
       return (this.charIndex == that.charIndex) 
           && this.termUpperCase.equals(that.termUpperCase) 
           && (this.componentIndex == that.componentIndex);
@@ -221,7 +221,7 @@ public class FieldIterator {
         .thenComparing((SearchTermElement t) -> t.getTermUpperCase().length());
 
     @Override
-    public int compareTo(@NotNull final SearchTermElement o) {
+    public int compareTo(final @NotNull SearchTermElement o) {
       return searchTermElementComparator
           .compare(this, o);
     }

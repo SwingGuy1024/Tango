@@ -4,14 +4,12 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.lang.reflect.Field;
-import java.util.Objects;
 import javax.swing.AbstractAction;
 import javax.swing.AbstractButton;
 import javax.swing.ActionMap;
@@ -22,8 +20,8 @@ import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import javax.swing.plaf.LayerUI;
+
 import org.checkerframework.checker.nullness.qual.NonNull;
-import org.checkerframework.checker.nullness.qual.Nullable;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
@@ -38,7 +36,7 @@ import static javax.swing.JComponent.*;
  * <p>Date: 4/4/18
  * <p>Time: 12:38 AM
  *
- * @author Miguel Mu\u00f1oz
+ * @author Miguel Muñoz
  */
 public final class SwipeView<C extends JComponent> extends LayerUI<C> {
 
@@ -101,8 +99,10 @@ public final class SwipeView<C extends JComponent> extends LayerUI<C> {
   }
   
   private final C liveComponent;
-  private @Nullable BufferedImage priorScreen=null;
-  private @Nullable BufferedImage finalScreen= null;
+
+  // Dummy values, which get replaced later.
+  private BufferedImage priorScreen= new BufferedImage(1, 1, 1); // Dummy screen
+  private BufferedImage finalScreen= new BufferedImage(1, 1, 1); // Dummy screen
   private final JLayer<C> layer;
   
   private boolean isAnimating = false;
@@ -169,14 +169,12 @@ public final class SwipeView<C extends JComponent> extends LayerUI<C> {
 
       assert finalScreen != null;
       assert priorScreen != null;
-      Image pScreen = Objects.requireNonNull(priorScreen);
-      Image uScreen = Objects.requireNonNull(finalScreen);
       if (swipeDirection == SwipeDirection.SWIPE_RIGHT) {
-        g.drawImage(uScreen, 0, 0, xLimit, height, 0, 0, xLimit*SCALE, height*SCALE, c);
-        g.drawImage(pScreen, xLimit, 0, width, height, xLimit*SCALE, 0, width*SCALE, height*SCALE, c);
+        g.drawImage(finalScreen, 0, 0, xLimit, height, 0, 0, xLimit*SCALE, height*SCALE, c);
+        g.drawImage(priorScreen, xLimit, 0, width, height, xLimit*SCALE, 0, width*SCALE, height*SCALE, c);
       } else {
-        g.drawImage(uScreen, xLimit, 0, width, height, xLimit*SCALE, 0, width*SCALE, height*SCALE, c);
-        g.drawImage(pScreen, 0, 0, xLimit, height, 0, 0, xLimit*SCALE, height*SCALE, c);
+        g.drawImage(finalScreen, xLimit, 0, width, height, xLimit*SCALE, 0, width*SCALE, height*SCALE, c);
+        g.drawImage(priorScreen, 0, 0, xLimit, height, 0, 0, xLimit*SCALE, height*SCALE, c);
       }
     } else {
       super.paint(g, c);
@@ -220,7 +218,7 @@ public final class SwipeView<C extends JComponent> extends LayerUI<C> {
       }
     };
     
-    BufferedImage fScreen = (Objects.requireNonNull(finalScreen)); // Only needed for nullness checker. It can't be null.
+    BufferedImage fScreen = finalScreen;
     timer.addActionListener(actionListener);
     Graphics2D graphics2D = GraphicsEnvironment.getLocalGraphicsEnvironment().createGraphics(fScreen);
     graphics2D.scale(SCALE, SCALE);
@@ -289,19 +287,12 @@ public final class SwipeView<C extends JComponent> extends LayerUI<C> {
    * @param swipeDirection The animation
    * @return An animated action
    */
-  @NotNull
-  public Runnable createAnimatedAction(final Runnable operation, final SwipeDirection swipeDirection) {
-    final Runnable fullOperation;
-    switch (swipeDirection) {
-      case SWIPE_LEFT:
-        fullOperation = () -> swipeLeft(operation);
-        break;
-      case SWIPE_RIGHT:
-        fullOperation = () -> swipeRight(operation);
-        break;
-      default:
-        throw new AssertionError(String.format("Unsupported Swipe Direction: %s", swipeDirection)); //NON-NLS
-    }
+  public @NotNull Runnable createAnimatedAction(final Runnable operation, final SwipeDirection swipeDirection) {
+    final Runnable fullOperation = switch (swipeDirection) {
+      case SWIPE_LEFT -> () -> swipeLeft(operation);
+      case SWIPE_RIGHT -> () -> swipeRight(operation);
+      default -> throw new AssertionError(String.format("Unsupported Swipe Direction: %s", swipeDirection)); //NON-NLS
+    };
     return fullOperation;
   }
 
@@ -324,8 +315,8 @@ public final class SwipeView<C extends JComponent> extends LayerUI<C> {
    * @throws IllegalArgumentException if the view was not first wrapped inside a SwipeView
    * @return A Runnable to perform the animated action.
    */
-  @NotNull
-  public static Runnable createAnimatedAction(final JComponent view, final Runnable action, final SwipeDirection direction) {
+
+  public static @NotNull Runnable createAnimatedAction(final JComponent view, final Runnable action, final SwipeDirection direction) {
     JLayer<?> animatingAncestor = Keystrokes.getSpecificAncestorOf(view, JLayer.class);
     @SuppressWarnings("unchecked") SwipeView<JComponent> swipeView = (SwipeView<JComponent>) animatingAncestor.getUI();
     return swipeView.createAnimatedAction(action, direction);

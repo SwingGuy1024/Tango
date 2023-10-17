@@ -17,7 +17,7 @@ import static org.junit.Assert.*;
  * <p>Date: 4/4/20
  * <p>Time: 11:22 PM
  *
- * @author Miguel Mu\u00f1oz
+ * @author Miguel Muñoz
  */
 public class FieldIteratorTest {
   @Test
@@ -60,8 +60,7 @@ public class FieldIteratorTest {
 //    }
   }
 
-  @NotNull
-  private List<JTextComponent> getTextComponents() {
+  private @NotNull List<JTextComponent> getTextComponents() {
     JTextField f1 = new JTextField();
     JTextField f2 = new JTextField();
     JTextField f3 = new JTextField();

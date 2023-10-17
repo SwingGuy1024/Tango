@@ -29,55 +29,64 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.WindowConstants;
+import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 import javax.swing.event.AncestorEvent;
 import javax.swing.event.AncestorListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.plaf.metal.MetalLookAndFeel;
+
 import org.checkerframework.checker.initialization.qual.Initialized;
-import org.checkerframework.checker.initialization.qual.UnderInitialization;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * <p>Created by IntelliJ IDEA.
  * <p>Date: 7/2/22
  * <p>Time: 2:00 AM
- * 
  * TODO: Try this:
  * todo    1 Eliminate the Matte border
  * todo    2 Put the line border back
  * todo    3 Put the clear box in its own JPanel, with a BoxLayout, or maybe a Box, with vertical orientation. That way, it doesn't expand.
- * 
  *
- * @author Miguel Mu\u00f1oz
+ * @author Miguel Muñoz
  */
 @SuppressWarnings({"NumericCastThatLosesPrecision", "HardCodedStringLiteral", "MagicNumber", "UseOfSystemOutOrSystemErr", "RedundantSuppression"})
-public class ClearableTextField extends JPanel {
+public final class ClearableTextField extends JPanel {
   private static final LineBorder buttonBorder = new LineBorder(Color.lightGray, 1);
-  @NonNull
-  private final JTextField textField;
+
+  private final @NonNull JTextField textField;
   private final JButton button = new JButton();
 
   /**
    * Wrap an existing JTextField inside a ClearableTextField. For now, this only works well with
    * newly constructed JTextFields that haven't been displayed yet.
+   * <br>
+   * This is private so the wrap() factory method can ensure that install gets called after construction.
+   * The checker framework doesn't like some of the calls that install() makes when under construction.
+   *
    * @param textField The text field.
+   * @return A ClearableTextField
    */
-  public ClearableTextField(@NotNull JTextField textField) {
-    super(new BorderLayout());
-    this.textField = textField;
-    install(textField);
+  public static ClearableTextField wrap(JTextField textField) {
+    ClearableTextField clearableTextField = new ClearableTextField(textField);
+    clearableTextField.install(textField);
+    return clearableTextField;
   }
 
-  @NotNull
-  public JTextField getTextField() {
+  private ClearableTextField(@NotNull JTextField textField) {
+    super(new BorderLayout());
+    this.textField = textField;
+  }
+
+  public @NotNull JTextField getTextField() {
     return textField;
   }
 
   @SuppressWarnings("method.invocation.invalid")
-  private void install(@UnderInitialization ClearableTextField this, @NonNull JTextField tField) {
+  private void install(@NonNull JTextField tField) {
     add(BorderLayout.CENTER, tField);
     add(BorderLayout.LINE_END, makeClearBox(tField));
     final AncestorListener ancestorListener = new AncestorListener() {
@@ -109,8 +118,9 @@ public class ClearableTextField extends JPanel {
     
     button.setToolTipText("Clear Search Box");
   }
+
   
-  private JComponent makeClearBox(@UnderInitialization ClearableTextField this, @NonNull JTextField tField) {
+  private JComponent makeClearBox(@NonNull JTextField tField) {
     button.setBorder(buttonBorder);
     button.setIcon(makeXIcon(tField));
     button.setFocusable(false);
@@ -138,7 +148,7 @@ public class ClearableTextField extends JPanel {
     tField.requestFocus();
   }
 
-  private Icon makeXIcon(@UnderInitialization ClearableTextField this, @NonNull final JTextField tField) {
+  private Icon makeXIcon(final @NonNull JTextField tField) {
     return new Icon() {
       private int size = -1;
       
@@ -151,10 +161,10 @@ public class ClearableTextField extends JPanel {
         tField.addPropertyChangeListener("font", pcl);
       }
 
-      private int calculateSize(String dim) {
+      private int calculateSize() {
         if (size <= 0) {
-          Insets fi = tField.getBorder().getBorderInsets(tField); // field insets
-          Insets bi = button.getBorder().getBorderInsets(button); // button insets
+          Insets fi = getInsetsFromBorder(tField); // field insets
+          Insets bi = getInsetsFromBorder(button); // button insets
           final int newSize = tField.getHeight() - (fi.top - bi.top) - (fi.bottom - bi.bottom);
           if (newSize > 0) {
             size = newSize;
@@ -166,13 +176,13 @@ public class ClearableTextField extends JPanel {
       @Override
       @Initialized
       public int getIconWidth() {
-        return calculateSize("wd");
+        return calculateSize();
       }
 
       @Override
       @Initialized
       public int getIconHeight() {
-        return calculateSize("ht");
+        return calculateSize();
       }
 
       @Override
@@ -199,12 +209,21 @@ public class ClearableTextField extends JPanel {
       }
     };
   }
+  
+  private static @NonNull Insets getInsetsFromBorder(JComponent c) {
+    @Nullable Border border = c.getBorder();
+    if (border == null) {
+      return new Insets(0, 0, 0, 0);
+    }
+    return border.getBorderInsets(c);
+  }
 
   /**
    * For testing
    * @param args Args
    * @throws UnsupportedLookAndFeelException for L&F
    */
+  @SuppressWarnings("dereference.of.nullable") // font.getSize(), etc. Font may be null.
   public static void main(String[] args) throws UnsupportedLookAndFeelException {
     UIManager.setLookAndFeel(new MetalLookAndFeel());
     JTextField textField = new JTextField();
@@ -216,7 +235,7 @@ public class ClearableTextField extends JPanel {
     frame.add(new JTextArea(20, 40), BorderLayout.CENTER);
     JButton button = new JButton("Change Font Size");
     button.addActionListener(e -> {
-          Font font = textField.getFont();
+      Font font = textField.getFont();
           if (font.getSize() == 24) {
             font = font.deriveFont(12.0f);
           } else {
