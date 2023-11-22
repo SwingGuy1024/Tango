@@ -47,14 +47,14 @@ public enum UIMenus implements CaretListener {
           removeCaretListener(caretOwner);
           @SuppressWarnings("dereference.of.nullable") // makes no sense. caretOwner can't be null!
           final String text = caretOwner.getText();
-          System.out.printf("deFocus c with %s to %s%n", text, (permFocusOwner == null) ? "None" : permFocusOwner.getClass().toString());
+//          System.out.printf("deFocus c with %s to %s%n", text, (permFocusOwner == null) ? "None" : permFocusOwner.getClass().toString());
         }
         if (permFocusOwner instanceof JTextComponent) {
           caretOwner = (JTextComponent) permFocusOwner;
           addCaretListener(caretOwner);
           @SuppressWarnings("dereference.of.nullable") // makes no sense. caretOwner can't be null!
           final String text = caretOwner.getText();
-          System.out.printf("Focus c with %s%n", text);
+//          System.out.printf("Focus c with %s%n", text);
         }
       }
     };
@@ -113,5 +113,9 @@ public enum UIMenus implements CaretListener {
     System.out.printf("Selection %b from %d =? %d%n", selectionPresent, e.getDot(), e.getMark());
     cutAction.setEnabled(selectionPresent);
     copyAction.setEnabled(selectionPresent);
+    // Untested
+    if (e.getSource() instanceof JTextComponent textComponent) {
+      pasteAction.setEnabled(textComponent.isEditable());
+    }
   }
 }

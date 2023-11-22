@@ -20,10 +20,15 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.RootPaneContainer;
+import javax.swing.UIDefaults;
+import javax.swing.UIManager;
 import javax.swing.event.AncestorEvent;
 import javax.swing.event.AncestorListener;
+import javax.swing.plaf.ColorUIResource;
 import javax.swing.text.Caret;
 import javax.swing.text.JTextComponent;
+
+import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 
 /**
  * <p>Created by IntelliJ IDEA.
@@ -445,5 +450,25 @@ public enum TangoUtils {
       }
     }
     return button;
+  }
+
+  /**
+   * <p>Install a modified version of the FlatMacDarkLaf. This version shows editable fields in black, and
+   * uneditable fields in a dark gray.</p>
+   */
+  public static void installDarkLookAndFeel() {
+    FlatMacDarkLaf.setup();
+    UIDefaults uiDefaults = UIManager.getDefaults();
+//    for (Object key : uiDefaults.keySet()) {
+//      final String keyText = key.toString();
+//      if (keyText.endsWith("ackground") && keyText.contains("Text")) {
+//        System.out.printf("%-30s: %s%n", key, uiDefaults.get(key)); // NON-NLS
+//      }
+//    }
+    final ColorUIResource activeBgColor = new ColorUIResource(Color.BLACK);
+    uiDefaults.put("TextField.background", activeBgColor);
+    uiDefaults.put("TextArea.background", activeBgColor);
+    uiDefaults.put("FormattedTextField.background", activeBgColor);
+    uiDefaults.put("TextPane.background", activeBgColor);
   }
 }
