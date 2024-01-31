@@ -6,6 +6,7 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.FlowLayout;
 import java.awt.Image;
+import java.awt.Paint;
 import java.awt.Toolkit;
 import java.awt.image.FilteredImageSource;
 import java.awt.image.ImageProducer;
@@ -29,6 +30,8 @@ import javax.swing.text.Caret;
 import javax.swing.text.JTextComponent;
 
 import com.formdev.flatlaf.themes.FlatMacDarkLaf;
+import com.formdev.flatlaf.ui.FlatBorder;
+import com.formdev.flatlaf.ui.FlatTextBorder;
 
 /**
  * <p>Created by IntelliJ IDEA.
@@ -98,7 +101,7 @@ public enum TangoUtils {
 
   /**
    * Configure a JTextArea for prose text and wrap it inside a JScrollPane that is set up for vertical scrolling and
-   * horizontal text wrapping the the component's width. This also sets the wordWrapStyle and lineWrap properties.
+   * horizontal text wrapping the component's width. This also sets the wordWrapStyle and lineWrap properties.
    * @param wrappedField The JTextArea to configure and wrap
    * @return a JScrollPane wrapping the now configured text area.
    */
@@ -146,7 +149,7 @@ public enum TangoUtils {
   /**
    * Removes the border on the specified component by calling {@code setBorder(null)}.
    * The JComponent.setBorder method is improperly annotated. It puts @NonNull on the parameter, which is wrong. This
-   * method works around that problem. It has to be its own method because you can't annotate a x.setBorder() call.
+   * method works around that problem. It has to be its own method because you can't annotate an x.setBorder() call.
    *
    * @param component The component
    */
@@ -456,19 +459,106 @@ public enum TangoUtils {
    * <p>Install a modified version of the FlatMacDarkLaf. This version shows editable fields in black, and
    * uneditable fields in a dark gray.</p>
    */
+  @SuppressWarnings({"HardCodedStringLiteral", "UseOfSystemOutOrSystemErr"})
   public static void installDarkLookAndFeel() {
     FlatMacDarkLaf.setup();
     UIDefaults uiDefaults = UIManager.getDefaults();
-//    for (Object key : uiDefaults.keySet()) {
-//      final String keyText = key.toString();
-//      if (keyText.endsWith("ackground") && keyText.contains("Text")) {
-//        System.out.printf("%-30s: %s%n", key, uiDefaults.get(key)); // NON-NLS
-//      }
-//    }
     final ColorUIResource activeBgColor = new ColorUIResource(Color.BLACK);
     uiDefaults.put("TextField.background", activeBgColor);
     uiDefaults.put("TextArea.background", activeBgColor);
     uiDefaults.put("FormattedTextField.background", activeBgColor);
     uiDefaults.put("TextPane.background", activeBgColor);
+
+    final CustomFlatTextBorder customTextFieldBorder = new CustomFlatTextBorder();
+    uiDefaults.put("TextField.border", customTextFieldBorder);
+    uiDefaults.put("FormattedTextField.border", customTextFieldBorder);
+    uiDefaults.put("PasswordField.border", customTextFieldBorder);
+    uiDefaults.put("ScrollPane.border", new CustomFlatBorder());
+
+//    for (Object key : uiDefaults.keySet()) {
+//      final String keyText = key.toString();
+//      if (keyText.startsWith("TextField.") || keyText.startsWith("TextArea.") || keyText.startsWith("TextComponent.")) {
+//        System.out.printf("%-30s: %s%n", key, uiDefaults.get(key)); // NON-NLS
+//      }
+//    }
+//    System.out.println();
+//    System.out.println("Borders:");
+//    uiDefaults.keySet()
+//        .stream()
+//        .filter(s -> s.toString().contains("border"))
+//        .forEach(s -> System.out.printf("%-30s: %s%n", s, uiDefaults.get(s)));
+  }
+
+  /**
+   * Custom Border to make a non-editable JTextField look like a disabled one when it gets selected.
+   * This gets applied to JTextField, JFormattedTextField, and JPasswordField.
+   */
+  public static class CustomFlatTextBorder extends FlatTextBorder {
+    /**
+     * Standard Constructor
+     */
+    public CustomFlatTextBorder() {
+      super();
+    }
+
+    @Override
+    protected Paint getBorderColor(Component c) {
+      if (c instanceof JTextComponent tc) {
+        if (!tc.isEditable()) {
+          return this.disabledBorderColor;
+        }
+      }
+      return super.getBorderColor(c);
+    }
+
+    @Override
+    protected Color getFocusColor(Component c) {
+      if (c instanceof JTextComponent tc) {
+        if (!tc.isEditable()) {
+          return getOutlineColor(c);
+        }
+      }
+      return super.getFocusColor(c);
+    }
+  }
+
+  /**
+   * Custom Border to make a non-editable JTextField look like a disabled one when it gets selected.
+   * This gets applied to a JScrollPane, and its custom features get invoked when it contains a 
+   * JTextComponent like JTextArea.
+   */
+  public static class CustomFlatBorder extends FlatBorder {
+    /**
+     * Standard Constructor
+     */
+    public CustomFlatBorder() { super(); }
+
+    @Override
+    protected Paint getBorderColor(Component c) {
+      if (c instanceof JScrollPane sp) {
+        if (isDisabledTextArea(sp)) {
+          return this.disabledBorderColor;
+        }
+      }
+      return super.getBorderColor(c);
+    }
+
+    @Override
+    protected Color getFocusColor(Component c) {
+      if (c instanceof JScrollPane sp) {
+        if (isDisabledTextArea(sp) ) {
+          return getOutlineColor(c);
+        }
+      }
+      return super.getFocusColor(c);
+    }
+    
+    private boolean isDisabledTextArea(JScrollPane sp) {
+      Component view = sp.getViewport().getView();
+      if (view instanceof JTextComponent tc) {
+        return !tc.isEditable();
+      }
+      return false;
+    }
   }
 }
