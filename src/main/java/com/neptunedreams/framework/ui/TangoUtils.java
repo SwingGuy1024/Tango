@@ -459,7 +459,7 @@ public enum TangoUtils {
    * <p>Install a modified version of the FlatMacDarkLaf. This version shows editable fields in black, and
    * uneditable fields in a dark gray.</p>
    */
-  @SuppressWarnings({"HardCodedStringLiteral", "UseOfSystemOutOrSystemErr"})
+  @SuppressWarnings({"HardCodedStringLiteral", "UseOfSystemOutOrSystemErr", "RedundantSuppression"})
   public static void installDarkLookAndFeel() {
     FlatMacDarkLaf.setup();
     UIDefaults uiDefaults = UIManager.getDefaults();
@@ -490,10 +490,13 @@ public enum TangoUtils {
   }
 
   /**
-   * Custom Border to make a non-editable JTextField look like a disabled one when it gets selected.
-   * This gets applied to JTextField, JFormattedTextField, and JPasswordField.
+   * <p>Custom Border to make a non-editable JTextField look like a disabled one when it gets selected.
+   * This gets applied to JTextField, JFormattedTextField, and JPasswordField.</p>
+   * <p>I don't understand how this works, because in both overridden methods, I'm returning the color white.
+   * But it works, so I'm okay with this.</p>
    */
   public static class CustomFlatTextBorder extends FlatTextBorder {
+
     /**
      * Standard Constructor
      */
@@ -515,7 +518,7 @@ public enum TangoUtils {
     protected Color getFocusColor(Component c) {
       if (c instanceof JTextComponent tc) {
         if (!tc.isEditable()) {
-          return getOutlineColor(c);
+          return disabledBorderColor;
         }
       }
       return super.getFocusColor(c);
@@ -523,9 +526,11 @@ public enum TangoUtils {
   }
 
   /**
-   * Custom Border to make a non-editable JTextField look like a disabled one when it gets selected.
+   * <p>Custom Border to make a non-editable JTextField look like a disabled one when it gets selected.
    * This gets applied to a JScrollPane, and its custom features get invoked when it contains a 
-   * JTextComponent like JTextArea.
+   * JTextComponent like JTextArea.</p>
+   * <p>I don't understand how this works, because in both overridden methods, I'm returning the color white.
+   * But it works, so I'm okay with this.</p>
    */
   public static class CustomFlatBorder extends FlatBorder {
     /**
@@ -547,7 +552,7 @@ public enum TangoUtils {
     protected Color getFocusColor(Component c) {
       if (c instanceof JScrollPane sp) {
         if (isDisabledTextArea(sp) ) {
-          return getOutlineColor(c);
+          return this.disabledBorderColor;
         }
       }
       return super.getFocusColor(c);
