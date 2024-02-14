@@ -44,6 +44,11 @@ public enum TangoUtils {
   ;
 
   /**
+   * rollover color for JButtons
+   */
+  public static final int HILIGHT_COLOR = 132;
+
+  /**
    * Wrap the specified component into the east side (Actually, the line-end side) of a new JPanel.
    * @param component The component to wrap
    * @return The containing JPanel
@@ -474,6 +479,7 @@ public enum TangoUtils {
     uiDefaults.put("FormattedTextField.border", customTextFieldBorder);
     uiDefaults.put("PasswordField.border", customTextFieldBorder);
     uiDefaults.put("ScrollPane.border", new CustomFlatBorder());
+    uiDefaults.put("Button.hoverBackground", new ColorUIResource(HILIGHT_COLOR, HILIGHT_COLOR, HILIGHT_COLOR));
 
 //    for (Object key : uiDefaults.keySet()) {
 //      final String keyText = key.toString();
