@@ -22,7 +22,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
  *
  * @see FocusInTextFieldListener
  * @see SelectionExistsListener
- * @author Miguel Mu\u00f1oz
+ * @author Miguel Muñoz
  */
 @SuppressWarnings({"Singleton", "UseOfSystemOutOrSystemErr", "HardCodedStringLiteral", "RedundantSuppression"})
 public enum SelectionSpy implements CaretListener {
@@ -35,6 +35,7 @@ public enum SelectionSpy implements CaretListener {
   private @Nullable JTextComponent focusedTextComponent = null;
   @SuppressWarnings("NonFinalFieldInEnum")
   private String selectedText;
+  private @Nullable JTextComponent priorFocusedTextComponent = null;
   
   private final List<SelectionExistsListener> selectionExistsListeners = new LinkedList<>();
   private final List<FocusInTextFieldListener> focusInTextFieldListeners = new LinkedList<>();
@@ -172,19 +173,18 @@ public enum SelectionSpy implements CaretListener {
       assert SwingUtilities.isEventDispatchThread() 
           : String.format("Thread %s Daemon = %b", Thread.currentThread().getName(), Thread.currentThread().isDaemon());
       Object newValue = evt.getNewValue();
-      boolean selectionExists;
-      if (newValue instanceof JTextComponent) {
-        JTextComponent textComponent = (JTextComponent) newValue;
+      boolean selectionExists = false;
+      if (newValue instanceof JTextComponent textComponent) {
         reassignCaretListener(textComponent);
         selectionExists = !selectedText.isEmpty();
-      } else {
+      } else if (newValue != null) {
+        priorFocusedTextComponent = focusedTextComponent;
         reassignCaretListener(null);
-        selectionExists = false;
       }
       spy.fireFocusInTextFieldListeners();
       spy.fireSelectionExistsListeners(selectionExists);
     }
-
+    
     /**
      * This keeps the CaretListener on the component with the focus.
      * It removes the caret listener from a textComponent that just lost the focus. 
@@ -205,4 +205,38 @@ public enum SelectionSpy implements CaretListener {
       }
     }
   }
+
+  /**
+   * <p>Restore the selection from priorFocusedTextComponent.</p>
+   * <p>To save and restore a selection before and after an operation, do this:</p>
+   * <pre>
+   *   void someMethod() {
+   *     JTextComponent info = SelectionSpy.getSelectionInfo();
+   *     performOperationThatRemovesAnySelection();
+   *     SelectionSpy.restoreSelection(info);
+   *   }
+   * </pre>
+   * <p>This code will work regardless of whether or not there is a focussed component with a selection.</p>
+   * @param info The previously saved JTextComponent
+   */
+  public static void restoreSelection(@Nullable JTextComponent info) {
+    if (info != null) {
+      info.requestFocus();
+    }
+  }
+
+  /**
+   * <p>Get the SelectionInfo, which keeps a record of the focussed component and the start and end indexes
+   * of the selected text.</p>
+   * @return The SelectionInfo
+   */
+  @Nullable
+  public static JTextComponent getPriorFocusedTextComponent() {
+    final JTextComponent focusComponent = spy.priorFocusedTextComponent;
+    if (focusComponent == null) {
+      return null;
+    }
+    return spy.priorFocusedTextComponent;
+  }
 }
+
