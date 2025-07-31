@@ -198,7 +198,7 @@ public enum SelectionSpy implements CaretListener {
       if (focusedComponent != null) {
         focusedComponent.removeCaretListener(sSpy);
       }
-      sSpy.setFocusedTextComponent(textComponent);
+      sSpy.setFocusedTextComponent(textComponent); // Set it, even if it's null. (changes it from prev. txtComp)
       
       if (textComponent != null) {
         textComponent.addCaretListener(sSpy);
@@ -230,8 +230,7 @@ public enum SelectionSpy implements CaretListener {
    * of the selected text.</p>
    * @return The SelectionInfo
    */
-  @Nullable
-  public static JTextComponent getPriorFocusedTextComponent() {
+  public static @Nullable JTextComponent getPriorFocusedTextComponent() {
     final JTextComponent focusComponent = spy.priorFocusedTextComponent;
     if (focusComponent == null) {
       return null;
