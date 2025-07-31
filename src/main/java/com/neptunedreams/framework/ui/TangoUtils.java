@@ -214,15 +214,7 @@ public enum TangoUtils {
    * @param caret The new Caret to install
    */
   public static void replaceCaret(final JTextComponent component, final Caret caret) {
-    final Caret priorCaret = component.getCaret();
-    int blinkRate = priorCaret.getBlinkRate();
-    if (priorCaret instanceof PropertyChangeListener) {
-      // For example, com.apple.laf.AquaCaret, the troublemaker, installs this listener which doesn't get removed when the Caret 
-      // gets uninstalled.
-      component.removePropertyChangeListener((PropertyChangeListener) priorCaret);
-    }
-    component.setCaret(caret);
-    caret.setBlinkRate(blinkRate); // Starts the new caret blinking.
+    StandardCaret.replaceCaret(component, caret);
   }
 
   /**
