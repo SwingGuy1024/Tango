@@ -48,7 +48,7 @@ import org.jetbrains.annotations.Range;
  * <br>Time: 4:59 PM
  * <br>@author Miguel Muñoz</p>
  */
-@SuppressWarnings("unused")
+@SuppressWarnings({"unused", "method.invocation", "type.anno.before.decl.anno"})
 public class Constrainer extends GridBagConstraints {
 
   /**
@@ -64,7 +64,7 @@ public class Constrainer extends GridBagConstraints {
    * <p>Copy Constructor. Use this to make a copy of another instance of Constrainer or GridBagConstraints.</p>
    * @param model The original Constrainer to copy.
    */
-  public Constrainer(GridBagConstraints model) {
+  public Constrainer(final GridBagConstraints model) {
     this();
     this.at(model.gridx, model.gridy)
         .anchor(model.anchor)
@@ -75,7 +75,6 @@ public class Constrainer extends GridBagConstraints {
         .pad(model.ipadx, model.ipady)
         ;
   }
-
 
   @SuppressWarnings("UseOfClone")
   @Override
