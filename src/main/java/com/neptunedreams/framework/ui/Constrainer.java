@@ -266,4 +266,447 @@ public class Constrainer extends GridBagConstraints {
    * @see #pad(int, int) 
    */
   public Constrainer iPadY(int padY) { ipady = padY; return this; }
+
+  /**
+   * Sets the gridx value to {@code RELATIVE}, indicating that the component should be placed next to the
+   * previously added component
+   *
+   * @return this, for method chaining
+   * @see GridBagConstraints#RELATIVE
+   * @see GridBagConstraints*gridx
+   */
+  public Constrainer relativeX() {
+    gridx = RELATIVE;
+    return this;
+  }
+
+  /**
+   * Sets the gridy value to {@code RELATIVE}, indicating that the component should be placed next to the
+   * previously added component
+   *
+   * @return this, for method chaining
+   * @see GridBagConstraints#RELATIVE
+   * @see GridBagConstraints*gridy
+   */
+  public Constrainer relativeY() {
+    gridy = RELATIVE;
+    return this;
+  }
+
+  /**
+   * Sets the gridwidth value to {@code RELATIVE}, indicating that the component is the next-to-last component in its column.
+   *
+   * @return this, for method chaining
+   * @see GridBagConstraints#RELATIVE
+   * @see GridBagConstraints*gridWidth
+   */
+  public Constrainer relativeWidth() {
+    gridwidth = RELATIVE;
+    return this;
+  }
+
+  /**
+   * Sets the gridheight value to {@code RELATIVE}, indicating that the component is the next-to-last component in its row.
+   *
+   * @return this, for method chaining
+   * @see GridBagConstraints#RELATIVE
+   * @see GridBagConstraints*gridheight
+   */
+  public Constrainer relativeHeight() {
+    gridheight = RELATIVE;
+    return this;
+  }
+
+  /**
+   * Sets the gridwidth value to {@code REMAINDER}, indicating that the component's display area will be from
+   * {@code gridx} to the last cell in the row.
+   *
+   * @return this, for method chaining
+   * @see GridBagConstraints#REMAINDER
+   * @see GridBagConstraints*gridWidth
+   */
+  public Constrainer remainderWidth() {
+    gridwidth = REMAINDER;
+    return this;
+  }
+
+  /**
+   * Sets the gridHeight value to {@code REMAINDER}, indicating that the component's display area will be from
+   * {@code gridy} to the last cell in the column.
+   *
+   * @return this, for method chaining
+   * @see GridBagConstraints#REMAINDER
+   * @see GridBagConstraints*gridHeight
+   */
+  public Constrainer remainderHeight() {
+    gridheight = REMAINDER;
+    return this;
+  }
+
+  /**
+   * Sets the fill value to {@code NONE}: Do not resize the component
+   *
+   * @return this, for method chaining
+   * @see GridBagConstraints#NONE
+   * @see GridBagConstraints#fill
+   */
+  public Constrainer fillNone() {
+    fill = GridBagConstraints.NONE;
+    return this;
+  }
+
+  /**
+   * Sets the fill value to {@code HORIZONTAL}: Make the component wide enough to fill its display area horizontally,
+   * but do not change its height.
+   *
+   * @return this, for method chaining
+   * @see GridBagConstraints#HORIZONTAL
+   * @see GridBagConstraints#fill
+   */
+  public Constrainer fillHorizontal() {
+    fill = GridBagConstraints.HORIZONTAL;
+    return this;
+  }
+
+  /**
+   * Sets the fill value to {@code VERTICAL}: Make the component tall enough to fill its display area vertically,
+   * but do not change its width.
+   *
+   * @return this, for method chaining
+   * @see GridBagConstraints#VERTICAL
+   * @see GridBagConstraints#fill
+   */
+  public Constrainer fillVertical() {
+    fill = GridBagConstraints.VERTICAL;
+    return this;
+  }
+
+  /**
+   * Sets the fill value to {@code BOTH}: Make the component fill its display area entirely.
+   *
+   * @return this, for method chaining
+   * @see GridBagConstraints#BOTH
+   * @see GridBagConstraints#fill
+   */
+  public Constrainer fillBoth() {
+    fill = GridBagConstraints.BOTH;
+    return this;
+  }
+
+  /**
+   * Sets the {@code anchor} value to {@code CENTER}, which is one of the absolute values for {@code anchor}.
+   * @return this, for method chaining
+   * @see GridBagConstraints#anchor
+   * @see GridBagConstraints#CENTER
+   */
+  public Constrainer anchorCenter() {
+    anchor = CENTER;
+    return this;
+  }
+
+  /**
+   * Sets the {@code anchor} value to {@code NORTH}, which is one of the absolute values for {@code anchor}.
+   *
+   * @return this, for method chaining
+   * @see GridBagConstraints#anchor
+   * @see GridBagConstraints#NORTH
+   */
+  public Constrainer anchorNorth() {
+    anchor = NORTH;
+    return this;
+  }
+
+  /**
+   * Sets the {@code anchor} value to {@code NORTHEAST}, which is one of the absolute values for {@code anchor}.
+   *
+   * @return this, for method chaining
+   * @see GridBagConstraints#anchor
+   * @see GridBagConstraints#NORTHEAST
+   */
+  public Constrainer anchorNorthEast() {
+    anchor = NORTHEAST;
+    return this;
+  }
+
+  /**
+   * Sets the {@code anchor} value to {@code EAST}, which is one of the absolute values for {@code anchor}.
+   *
+   * @return this, for method chaining
+   * @see GridBagConstraints#anchor
+   * @see GridBagConstraints#EAST
+   */
+  public Constrainer anchorEast() {
+    anchor = EAST;
+    return this;
+  }
+
+  /**
+   * Sets the {@code anchor} value to {@code SOUTHEAST}, which is one of the absolute values for {@code anchor}.
+   *
+   * @return this, for method chaining
+   * @see GridBagConstraints#anchor
+   * @see GridBagConstraints#SOUTHEAST
+   */
+  public Constrainer anchorSouthEast() {
+    anchor = SOUTHEAST;
+    return this;
+  }
+
+  /**
+   * Sets the {@code anchor} value to {@code SOUTH}, which is one of the absolute values for {@code anchor}.
+   *
+   * @return this, for method chaining
+   * @see GridBagConstraints#anchor
+   * @see GridBagConstraints#SOUTH
+   */
+  public Constrainer anchorSouth() {
+    anchor = SOUTH;
+    return this;
+  }
+
+  /**
+   * Sets the {@code anchor} value to {@code SOUTHWEST}, which is one of the absolute values for {@code anchor}.
+   *
+   * @return this, for method chaining
+   * @see GridBagConstraints#anchor
+   * @see GridBagConstraints#SOUTHWEST
+   */
+  public Constrainer anchorSouthWest() {
+    anchor = SOUTHWEST;
+    return this;
+  }
+
+  /**
+   * Sets the {@code anchor} value to {@code WEST}, which is one of the absolute values for {@code anchor}.
+   *
+   * @return this, for method chaining
+   * @see GridBagConstraints#anchor
+   * @see GridBagConstraints#WEST
+   */
+  public Constrainer anchorWest() {
+    anchor = WEST;
+    return this;
+  }
+
+  /**
+   * Sets the {@code anchor} value to {@code NORTHWEST}, which is one of the absolute values for {@code anchor}.
+   *
+   * @return this, for method chaining
+   * @see GridBagConstraints#anchor
+   * @see GridBagConstraints#NORTHWEST
+   */
+  public Constrainer anchorNorthWest() {
+    anchor = NORTHWEST;
+    return this;
+  }
+
+  /**
+   * Sets the {@code anchor} value to {@code PAGE_START}, which is one of the orientation relative values for
+   * {@code anchor}
+   * @return this, for method chaining
+   * @see GridBagConstraints#PAGE_START
+   * @see GridBagConstraints#anchor
+   */
+  public Constrainer anchorPageStart() {
+    anchor = PAGE_START;
+    return this;
+  }
+
+  /**
+   * Sets the {@code anchor} value to {@code PAGE_END}, which is one of the orientation relative values for
+   * {@code anchor}
+   *
+   * @return this, for method chaining
+   * @see GridBagConstraints#PAGE_END
+   * @see GridBagConstraints#anchor
+   */
+  public Constrainer anchorPageEnd() {
+    anchor = PAGE_END;
+    return this;
+  }
+
+  /**
+   * Sets the {@code anchor} value to {@code LINE_START}, which is one of the orientation relative values for
+   * {@code anchor}
+   *
+   * @return this, for method chaining
+   * @see GridBagConstraints#LINE_START
+   * @see GridBagConstraints#anchor
+   */
+  public Constrainer anchorLineStart() {
+    anchor = LINE_START;
+    return this;
+  }
+
+  /**
+   * Sets the {@code anchor} value to {@code LINE_END}, which is one of the orientation relative values for
+   * {@code anchor}
+   *
+   * @return this, for method chaining
+   * @see GridBagConstraints#LINE_END
+   * @see GridBagConstraints#anchor
+   */
+  public Constrainer anchorLineEnd() {
+    anchor = LINE_END;
+    return this;
+  }
+
+  /**
+   * Sets the {@code anchor} value to {@code FIRST_LINE_START}, which is one of the orientation relative values for
+   * {@code anchor}
+   *
+   * @return this, for method chaining
+   * @see GridBagConstraints#FIRST_LINE_START
+   * @see GridBagConstraints#anchor
+   */
+  public Constrainer anchorFirstLineStart() {
+    anchor = FIRST_LINE_START;
+    return this;
+  }
+
+  /**
+   * Sets the {@code anchor} value to {@code FIRST_LINE_END}, which is one of the orientation relative values for
+   * {@code anchor}
+   *
+   * @return this, for method chaining
+   * @see GridBagConstraints#FIRST_LINE_END
+   * @see GridBagConstraints#anchor
+   */
+  public Constrainer anchorFirstLineEnd() {
+    anchor = FIRST_LINE_END;
+    return this;
+  }
+
+  /**
+   * Sets the {@code anchor} value to {@code LAST_LINE_START}, which is one of the orientation relative values for
+   * {@code anchor}
+   *
+   * @return this, for method chaining
+   * @see GridBagConstraints#LAST_LINE_START
+   * @see GridBagConstraints#anchor
+   */
+  public Constrainer anchorLastLineStart() {
+    anchor = LAST_LINE_START;
+    return this;
+  }
+
+  /**
+   * Sets the {@code anchor} value to {@code LAST_LINE_END}, which is one of the orientation relative values for
+   * {@code anchor}
+   *
+   * @return this, for method chaining
+   * @see GridBagConstraints#LAST_LINE_END
+   * @see GridBagConstraints#anchor
+   */
+  public Constrainer anchorLastLineEnd() {
+    anchor = LAST_LINE_END;
+    return this;
+  }
+
+  /**
+   * Sets the anchor field to BASELINE, which is one of the baseline relative values for anchor.
+   * @return this, for method chaining
+   * @see GridBagConstraints#BASELINE
+   * @see GridBagConstraints#anchor
+   */
+  public Constrainer anchorBaseline() {
+    anchor = BASELINE;
+    return this;
+  }
+
+  /**
+   * Sets the anchor field to BASELINE_LEADING, which is one of the baseline relative values for anchor.
+   *
+   * @return this, for method chaining
+   * @see GridBagConstraints#BASELINE_LEADING
+   * @see GridBagConstraints#anchor
+   */
+  public Constrainer anchorBaselineLeading() {
+    anchor = BASELINE_LEADING;
+    return this;
+  }
+
+  /**
+   * Sets the anchor field to BASELINE_TRAILING, which is one of the baseline relative values for anchor.
+   *
+   * @return this, for method chaining
+   * @see GridBagConstraints#BASELINE_TRAILING
+   * @see GridBagConstraints#anchor
+   */
+  public Constrainer anchorBaselineTrailing() {
+    anchor = BASELINE_TRAILING;
+    return this;
+  }
+
+  /**
+   * Sets the anchor field to ABOVE_BASELINE, which is one of the baseline relative values for anchor.
+   *
+   * @return this, for method chaining
+   * @see GridBagConstraints#ABOVE_BASELINE
+   * @see GridBagConstraints#anchor
+   */
+  public Constrainer anchorAboveBaseline() {
+    anchor = ABOVE_BASELINE;
+    return this;
+  }
+
+  /**
+   * Sets the anchor field to ABOVE_BASELINE_LEADING, which is one of the baseline relative values for anchor.
+   *
+   * @return this, for method chaining
+   * @see GridBagConstraints#ABOVE_BASELINE_LEADING
+   * @see GridBagConstraints#anchor
+   */
+  public Constrainer anchorAboveBaselineLeading() {
+    anchor = ABOVE_BASELINE_LEADING;
+    return this;
+  }
+
+  /**
+   * Sets the anchor field to ABOVE_BASELINE_TRAILING, which is one of the baseline relative values for anchor.
+   *
+   * @return this, for method chaining
+   * @see GridBagConstraints#ABOVE_BASELINE_TRAILING
+   * @see GridBagConstraints#anchor
+   */
+  public Constrainer anchorAboveBaselineTrailing() {
+    anchor = ABOVE_BASELINE_TRAILING;
+    return this;
+  }
+
+  /**
+   * Sets the anchor field to BELOW_BASELINE, which is one of the baseline relative values for anchor.
+   *
+   * @return this, for method chaining
+   * @see GridBagConstraints#BELOW_BASELINE
+   * @see GridBagConstraints#anchor
+   */
+  public Constrainer anchorBelowBaseline() {
+    anchor = BELOW_BASELINE;
+    return this;
+  }
+
+  /**
+   * Sets the anchor field to BELOW_BASELINE_LEADING, which is one of the baseline relative values for anchor.
+   *
+   * @return this, for method chaining
+   * @see GridBagConstraints#BELOW_BASELINE_LEADING
+   * @see GridBagConstraints#anchor
+   */
+  public Constrainer anchorBelowBaselineLeading() {
+    anchor = BELOW_BASELINE_LEADING;
+    return this;
+  }
+
+  /**
+   * Sets the anchor field to BELOW_BASELINE_TRAILING, which is one of the baseline relative values for anchor.
+   *
+   * @return this, for method chaining
+   * @see GridBagConstraints#BELOW_BASELINE_TRAILING
+   * @see GridBagConstraints#anchor
+   */
+  public Constrainer anchorBelowBaselineTrailing() {
+    anchor = BELOW_BASELINE_TRAILING;
+    return this;
+  }
 }
