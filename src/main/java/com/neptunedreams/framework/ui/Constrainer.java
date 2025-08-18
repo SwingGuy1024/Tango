@@ -62,6 +62,7 @@ public class Constrainer extends GridBagConstraints {
 
   /**
    * <p>Copy Constructor. Use this to make a copy of another instance of Constrainer or GridBagConstraints.</p>
+   *
    * @param model The original Constrainer to copy.
    */
   public Constrainer(final GridBagConstraints model) {
@@ -83,9 +84,10 @@ public class Constrainer extends GridBagConstraints {
   }
 
   /**
-   * Sets the gridx and gridy properties to x and y, respectively.
-   * @param x the new gridx value
-   * @param y the new gridy value
+   * Sets the {@code gridx} and {@code gridy} properties to x and y, respectively.
+   *
+   * @param x the new {@code gridx} value
+   * @param y the new {@code gridy} value
    * @return this, for method chaining
    * @see #gridx(int)
    * @see #gridy(int)
@@ -97,8 +99,9 @@ public class Constrainer extends GridBagConstraints {
   }
 
   /**
-   * Sets gridx to the parameter
-   * @param x the new gridx
+   * Sets {@code gridx} to the parameter
+   *
+   * @param x the new {@code gridx}
    * @return this, for method chaining
    * @see #at(int, int)
    */
@@ -108,9 +111,9 @@ public class Constrainer extends GridBagConstraints {
   }
 
   /**
-   * Sets gridy to the parameter
+   * Sets {@code gridy} to the parameter
    *
-   * @param y the new gridy
+   * @param y the new {@code gridy}
    * @return this, for method chaining
    * @see #at(int, int)
    */
@@ -121,6 +124,7 @@ public class Constrainer extends GridBagConstraints {
 
   /**
    * Sets gridwidth and gridheight to x and y
+   *
    * @param x The new gridwidth
    * @param y The new gridheight
    * @return this, for method chaining 
@@ -135,6 +139,7 @@ public class Constrainer extends GridBagConstraints {
 
   /**
    * Sets gridwidth to w
+   *
    * @param w the new gridwidth
    * @return this, for method chaining
    * @see #gridSize(int, int) 
@@ -143,6 +148,7 @@ public class Constrainer extends GridBagConstraints {
 
   /**
    * Sets gridheight to h
+   *
    * @param h the new gridheight
    * @return this, for method chaining
    * @see #gridSize(int, int) 
@@ -151,6 +157,7 @@ public class Constrainer extends GridBagConstraints {
 
   /**
    * Sets the weightx and weighty values
+   *
    * @param weightX the new weightx
    * @param weightY the new weighty
    * @return this, for method chaining
@@ -165,6 +172,7 @@ public class Constrainer extends GridBagConstraints {
 
   /**
    * Sets the weightx value
+   * 
    * @param weightX the new weightx value
    * @return this, for method chaining
    * @see #weight(double, double) 
@@ -173,6 +181,7 @@ public class Constrainer extends GridBagConstraints {
 
   /**
    * Sets the new weighty value
+   *
    * @param weightY the new weighty value
    * @return this, for method chaining
    * @see #weight(double, double) 
@@ -180,8 +189,9 @@ public class Constrainer extends GridBagConstraints {
   public Constrainer weightY(double weightY) { weighty = weightY; return this; }
 
   /**
-   * Sets the new anchor value
-   * @param anchor The new anchor value
+   * Sets the new  {@code anchor} value
+   *
+   * @param anchor The new {@code anchor} value
    * @return this, for method chaining
    */
   @Range(from = GridBagConstraints.CENTER, to = GridBagConstraints.BELOW_BASELINE_TRAILING)
@@ -193,6 +203,7 @@ public class Constrainer extends GridBagConstraints {
 
   /**
    * Sets the new fill value
+   *
    * @param fill The new fill value
    * @return this, for method chaining
    */
@@ -205,6 +216,7 @@ public class Constrainer extends GridBagConstraints {
 
   /**
    * Sets the new insets
+   *
    * @param top    The new top value
    * @param left   the new left value
    * @param bottom the new bottom value
@@ -218,6 +230,7 @@ public class Constrainer extends GridBagConstraints {
 
   /**
    * Sets the new insets to a copy of the specified insets
+   *
    * @param insets The insets to set
    * @return this, for method chaining
    */
@@ -229,6 +242,7 @@ public class Constrainer extends GridBagConstraints {
 
   /**
    * Sets the insets to a new Insets instance with all four sides set to the same value.
+   *
    * @param allSides The insets for all four sides
    * @return this, for method chaining
    */
@@ -239,6 +253,7 @@ public class Constrainer extends GridBagConstraints {
 
   /**
    * Sets the ipadx and ipady values
+   *
    * @param padX the new ipadx value
    * @param padY the new ipady value
    * @return this, for method chaining
@@ -253,6 +268,7 @@ public class Constrainer extends GridBagConstraints {
 
   /**
    * Sets the ipadx value
+   *
    * @param padX the new ipadx value
    * @return this, for method chaining
    * @see #pad(int, int) 
@@ -261,6 +277,7 @@ public class Constrainer extends GridBagConstraints {
 
   /**
    * Sets the ipady value
+   *
    * @param padY the new ipady value
    * @return this, for method chaining
    * @see #pad(int, int) 
@@ -268,7 +285,7 @@ public class Constrainer extends GridBagConstraints {
   public Constrainer iPadY(int padY) { ipady = padY; return this; }
 
   /**
-   * Sets the gridx value to {@code RELATIVE}, indicating that the component should be placed next to the
+   * Sets the {@code gridx} value to {@code RELATIVE}, indicating that the component should be placed next to the
    * previously added component
    *
    * @return this, for method chaining
@@ -281,7 +298,7 @@ public class Constrainer extends GridBagConstraints {
   }
 
   /**
-   * Sets the gridy value to {@code RELATIVE}, indicating that the component should be placed next to the
+   * Sets the {@code gridy} value to {@code RELATIVE}, indicating that the component should be placed next to the
    * previously added component
    *
    * @return this, for method chaining
@@ -294,7 +311,8 @@ public class Constrainer extends GridBagConstraints {
   }
 
   /**
-   * Sets the gridwidth value to {@code RELATIVE}, indicating that the component is the next-to-last component in its column.
+   * Sets the gridwidth value to {@code RELATIVE}, indicating that the component is the next-to-last component in its
+   * column.
    *
    * @return this, for method chaining
    * @see GridBagConstraints#RELATIVE
@@ -306,7 +324,8 @@ public class Constrainer extends GridBagConstraints {
   }
 
   /**
-   * Sets the gridheight value to {@code RELATIVE}, indicating that the component is the next-to-last component in its row.
+   * Sets the gridheight value to {@code RELATIVE}, indicating that the component is the next-to-last component in its
+   * row.
    *
    * @return this, for method chaining
    * @see GridBagConstraints#RELATIVE
@@ -604,7 +623,7 @@ public class Constrainer extends GridBagConstraints {
   }
 
   /**
-   * Sets the anchor field to BASELINE, which is one of the baseline relative values for anchor.
+   * Sets the {@code anchor} field to BASELINE, which is one of the baseline relative values for {@code anchor}.
    * @return this, for method chaining
    * @see GridBagConstraints#BASELINE
    * @see GridBagConstraints#anchor
@@ -615,7 +634,8 @@ public class Constrainer extends GridBagConstraints {
   }
 
   /**
-   * Sets the anchor field to BASELINE_LEADING, which is one of the baseline relative values for anchor.
+   * Sets the {@code anchor} field to BASELINE_LEADING, which is one of the baseline relative values for
+   * {@code anchor}.
    *
    * @return this, for method chaining
    * @see GridBagConstraints#BASELINE_LEADING
@@ -627,7 +647,8 @@ public class Constrainer extends GridBagConstraints {
   }
 
   /**
-   * Sets the anchor field to BASELINE_TRAILING, which is one of the baseline relative values for anchor.
+   * Sets the {@code anchor} field to BASELINE_TRAILING, which is one of the baseline relative values for
+   * {@code anchor}.
    *
    * @return this, for method chaining
    * @see GridBagConstraints#BASELINE_TRAILING
@@ -639,7 +660,8 @@ public class Constrainer extends GridBagConstraints {
   }
 
   /**
-   * Sets the anchor field to ABOVE_BASELINE, which is one of the baseline relative values for anchor.
+   * Sets the {@code anchor} field to ABOVE_BASELINE, which is one of the baseline relative values for
+   * {@code anchor}.
    *
    * @return this, for method chaining
    * @see GridBagConstraints#ABOVE_BASELINE
@@ -651,7 +673,8 @@ public class Constrainer extends GridBagConstraints {
   }
 
   /**
-   * Sets the anchor field to ABOVE_BASELINE_LEADING, which is one of the baseline relative values for anchor.
+   * Sets the {@code anchor} field to ABOVE_BASELINE_LEADING, which is one of the baseline relative values for
+   * {@code anchor}.
    *
    * @return this, for method chaining
    * @see GridBagConstraints#ABOVE_BASELINE_LEADING
@@ -663,7 +686,8 @@ public class Constrainer extends GridBagConstraints {
   }
 
   /**
-   * Sets the anchor field to ABOVE_BASELINE_TRAILING, which is one of the baseline relative values for anchor.
+   * Sets the {@code anchor} field to ABOVE_BASELINE_TRAILING, which is one of the baseline relative values for
+   * {@code anchor}.
    *
    * @return this, for method chaining
    * @see GridBagConstraints#ABOVE_BASELINE_TRAILING
@@ -675,7 +699,7 @@ public class Constrainer extends GridBagConstraints {
   }
 
   /**
-   * Sets the anchor field to BELOW_BASELINE, which is one of the baseline relative values for anchor.
+   * Sets the {@code anchor} field to BELOW_BASELINE, which is one of the baseline relative values for {@code anchor}.
    *
    * @return this, for method chaining
    * @see GridBagConstraints#BELOW_BASELINE
@@ -687,7 +711,8 @@ public class Constrainer extends GridBagConstraints {
   }
 
   /**
-   * Sets the anchor field to BELOW_BASELINE_LEADING, which is one of the baseline relative values for anchor.
+   * Sets the {@code anchor} field to BELOW_BASELINE_LEADING, which is one of the baseline relative values for
+   * {@code anchor}.
    *
    * @return this, for method chaining
    * @see GridBagConstraints#BELOW_BASELINE_LEADING
@@ -699,7 +724,8 @@ public class Constrainer extends GridBagConstraints {
   }
 
   /**
-   * Sets the anchor field to BELOW_BASELINE_TRAILING, which is one of the baseline relative values for anchor.
+   * Sets the {@code anchor} field to BELOW_BASELINE_TRAILING, which is one of the baseline relative values for
+   * {@code anchor}.
    *
    * @return this, for method chaining
    * @see GridBagConstraints#BELOW_BASELINE_TRAILING
