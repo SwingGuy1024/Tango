@@ -37,6 +37,7 @@ import org.checkerframework.checker.initialization.qual.UnderInitialization;
  * @author Miguel Muñoz
  */
 public class StandardCaret extends DefaultCaret {
+  public static final String EDITABLE = "editable";
   // In the event of a double click, these are the positions of the low end and high end
   // of the word that was clicked.
   private int highMark;
@@ -139,17 +140,16 @@ public class StandardCaret extends DefaultCaret {
   public static void replaceCaret(final JTextComponent component, final Caret caret) {
     final Caret priorCaret = component.getCaret();
     int blinkRate = priorCaret.getBlinkRate();
-    if (priorCaret instanceof PropertyChangeListener) {
-      // For example, com.apple.laf.AquaCaret, the troublemaker, installs this listener
-      // which doesn't get removed when the Caret gets uninstalled.
-      component.removePropertyChangeListener((PropertyChangeListener) priorCaret);
-    }
     priorCaret.deinstall(component);
-    component.removePropertyChangeListener(editableChangeListener);
-    component.setCaret(caret);
-    component.addPropertyChangeListener("editable", editableChangeListener);
-    caret.install(component);
+    component.setCaret(caret); // Calls caret.install(), among other things.
     caret.setBlinkRate(blinkRate); // Starts the new caret blinking.
+    component.addPropertyChangeListener(EDITABLE, editableChangeListener);
+  }
+
+  @Override
+  public void deinstall(JTextComponent component) {
+    component.removePropertyChangeListener(EDITABLE, editableChangeListener);
+    super.deinstall(component);
   }
 
   @Override
@@ -233,11 +233,6 @@ public class StandardCaret extends DefaultCaret {
   }
 
   @Override
-  public void setDot(final int dot, final Position.Bias dotBias) {
-    super.setDot(dot, dotBias);
-  }
-
-  @Override
   public void mouseDragged(final MouseEvent e) {
     if (!selectingByWord && !selectingByLine) {
       super.mouseDragged(e);
@@ -287,7 +282,7 @@ public class StandardCaret extends DefaultCaret {
     Position.Bias[] biasRet = new Position.Bias[1];
     return component.getUI().viewToModel2D(component, pt, biasRet);
   }
-  
+
   private MouseEvent makeNewEvent(MouseEvent e, int pos) {
     JTextComponent component = getComponent();
     try {
