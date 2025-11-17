@@ -218,11 +218,13 @@ public enum TangoUtils {
   }
 
   /**
-   * Recurse through all child components of the specified top component looking for JTextComponents, such as JTextField and JTextArea,
-   * and replace their DefaultCaret with the Caret produced by the specified {@code caretSupplier}.
-   * For UIs that set a custom caret, as the AquaUI for Macintosh does, this will remove the behavior of the platform's default Caret.
-   * The AquaCaret, for example will preselect a component's text when the component receives the focus. Calling this method will remove
-   * that behavior if your caretSupplier does not produce a Caret with the same feature.
+   * Recurse through all child components of the specified top component looking for JTextComponents, such as
+   * JTextField and JTextArea, and replace their DefaultCaret with the Caret produced by the specified
+   * {@code caretSupplier}.
+   * For UIs that set a custom caret, as the AquaUI for Macintosh does, this will remove the behavior of the
+   * platform's default Caret.
+   * The AquaCaret, for example will preselect a component's text when the component receives the focus. Calling this
+   * method will remove that behavior if your caretSupplier does not produce a Caret with the same feature.
    * @param topComponent The master component, such as the ContentPane of a JFrame.
    * @param caretSupplier A supplier to create a StandardCaret for each JTextComponent.
    */
@@ -234,7 +236,7 @@ public enum TangoUtils {
     } else {
       Component[] components = topComponent.getComponents();
       for (Component c : components) {
-        if (c instanceof Container container) {
+        if ((c instanceof Container container) && (container.getComponentCount() > 0)) {
           replaceAllCarets(container, caretSupplier);
         }
       }
