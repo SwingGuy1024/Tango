@@ -138,10 +138,18 @@ public class StandardCaret extends DefaultCaret {
   public static void replaceCaret(final JTextComponent component, final Caret caret) {
     final Caret priorCaret = component.getCaret();
     int blinkRate = priorCaret.getBlinkRate();
-    priorCaret.deinstall(component);
+    priorCaret.deinstall(component); // DefaultCaret and AquaCaret have their own deinstall implementation.
     component.setCaret(caret); // Calls caret.install(), among other things.
     caret.setBlinkRate(blinkRate); // Starts the new caret blinking.
-    component.addPropertyChangeListener(EDITABLE, editableChangeListener);
+  }
+
+  @Override
+  public void install(JTextComponent c) {
+    super.install(c);
+    // Todo: Do we need to test for buttons that don't request the focus. Is that a better way to do this?
+    // Todo: Should this go into a subclass of StandardCaret? This is application-specific behavior.
+    // Todo: Should this editableChangeListener be a settable property of the Caret?
+    c.addPropertyChangeListener(EDITABLE, editableChangeListener);
   }
 
   @Override
