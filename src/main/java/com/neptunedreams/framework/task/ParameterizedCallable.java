@@ -1,6 +1,6 @@
 package com.neptunedreams.framework.task;
 
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * <p>Created by IntelliJ IDEA.

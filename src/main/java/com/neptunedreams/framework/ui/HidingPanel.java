@@ -4,26 +4,27 @@ import java.awt.CardLayout;
 import java.awt.Component;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
-import org.checkerframework.checker.nullness.qual.NonNull;
+
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Allows you to show or hide any JComponent, without changing the layout. The hideable component takes up
  * the same amount of space regardless of whether it's visible. The setContentVisible() method is used to show or 
  * hide the content. (Be sure not to mistakenly call setVisible().)
  * <p>
- * The member sub-components of the content may be disabled instead of hidden, by setting the disableInsteadOfHide
+ * The member subcomponents of the content may be disabled instead of hidden, by setting the disableInsteadOfHide
  * property.
  * <p>Created by IntelliJ IDEA.
  * <p>Date: 12/28/17
  * <p>Time: 7:10 PM
  *
- * @author Miguel Mu\u00f1oz
+ * @author Miguel Muñoz
  */
 public final class HidingPanel extends JPanel {
   private static final String FALSE = String.valueOf(false);
   private static final String TRUE = String.valueOf(true);
   private boolean visible = false;
-  private final @NonNull CardLayout layout;
+  private final @NotNull CardLayout layout;
   private boolean isDisableInsteadOfHide = false;
 
   private HidingPanel() {
@@ -89,7 +90,7 @@ public final class HidingPanel extends JPanel {
    * Disables the components inside the content instead of hiding them. This is currently very primitive, in that
    * it doesn't recurse into member components. To support that, I would need to add some more code, but I didn't
    * need this at the time that I added this feature, so I haven't implemented it.
-   * @param disableInsteadOfHide self explanatory
+   * @param disableInsteadOfHide self-explanatory
    */
   public void setDisableInsteadOfHide(final boolean disableInsteadOfHide) {
     isDisableInsteadOfHide = disableInsteadOfHide;

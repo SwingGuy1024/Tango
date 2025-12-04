@@ -14,8 +14,7 @@ import com.neptunedreams.framework.data.RecordSelectionModel;
 import com.neptunedreams.framework.data.SearchOption;
 import com.neptunedreams.framework.event.MasterEventBus;
 import com.neptunedreams.util.StringStuff;
-import org.checkerframework.checker.initialization.qual.NotOnlyInitialized;
-import org.checkerframework.checker.nullness.qual.NonNull;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Handles user input and output by sending commands to the data model.
@@ -33,7 +32,6 @@ public final class RecordController<R, PK, F extends DBField> implements RecordM
   private F order;
   private final Dao<R, PK, F> dao;
   private final RecordSelectionModel<? extends R> recordSelectionModel;
-  @NotOnlyInitialized
   private final RecordModel<R> model;
 
   @SuppressWarnings("methodref.receiver.bound")
@@ -41,12 +39,12 @@ public final class RecordController<R, PK, F extends DBField> implements RecordM
       Dao<R, PK, F> theDao,
       RecordSelectionModel<? extends R> recordSelectionModel,
       F initialOrder,
-      Supplier<@NonNull R> recordConstructor,
+      Supplier<@NotNull R> recordSupplier,
       Function<R, Integer> getIdFunction
   ) {
     dao = theDao;
     this.recordSelectionModel = recordSelectionModel;
-    model = new RecordModel<>(recordConstructor, getIdFunction);
+    model = new RecordModel<>(recordSupplier, getIdFunction);
     order = initialOrder;
     AutoSave.engage(this::saveCurrentRecord); // warning suppressed here.
   }
@@ -56,7 +54,7 @@ public final class RecordController<R, PK, F extends DBField> implements RecordM
    * @param theDao The DAO
    * @param recordSelectionModel The selection model from which the controller gets the selected record
    * @param initialOrder The initial order of the records
-   * @param recordConstructor Constructs a new, blank record
+   * @param recordSupplier Constructs a new, blank record
    * @param getIdFunction Function to  get the ID from the record
    * @param <RR> The record type
    * @param <PPK> The primary key type
@@ -67,10 +65,10 @@ public final class RecordController<R, PK, F extends DBField> implements RecordM
       Dao<RR, PPK, FF> theDao,
       RecordSelectionModel<? extends RR> recordSelectionModel,
       FF initialOrder,
-      Supplier<@NonNull RR> recordConstructor,
+      Supplier<@NotNull RR> recordSupplier,
       Function<RR, Integer> getIdFunction
   ) {
-    RecordController<RR, PPK, FF> recordController = new RecordController<>(theDao, recordSelectionModel, initialOrder, recordConstructor, getIdFunction);
+    RecordController<RR, PPK, FF> recordController = new RecordController<>(theDao, recordSelectionModel, initialOrder, recordSupplier, getIdFunction);
     recordController.model.addModelListener(recordController);
     return recordController;
   }
@@ -93,13 +91,13 @@ public final class RecordController<R, PK, F extends DBField> implements RecordM
     return order;
   }
 
-  private void loadNewRecord(@NonNull R record) {
+  private void loadNewRecord(@NotNull R record) {
     saveCurrentRecord();
     MasterEventBus.postChangeRecordEvent(record);
   }
 
   void saveCurrentRecord() {
-    @NonNull R currentRecord = recordSelectionModel.getCurrentRecord(); // Move this back to where the comment is
+    @NotNull R currentRecord = recordSelectionModel.getCurrentRecord(); // Move this back to where the comment is
 
     if (recordSelectionModel.isRecordDataModified()) {
       try {
@@ -117,7 +115,7 @@ public final class RecordController<R, PK, F extends DBField> implements RecordM
   public void addBlankRecord() {
     // If the last record is already blank, just go to it
     final int lastIndex = model.getSize() - 1;
-    @NonNull R lastRecord = model.getRecordAt(lastIndex);
+    @NotNull R lastRecord = model.getRecordAt(lastIndex);
     assert lastRecord != null;
     final PK lastRecordKey = dao.getPrimaryKey(lastRecord);
     
@@ -158,7 +156,7 @@ public final class RecordController<R, PK, F extends DBField> implements RecordM
    * This executes on the event thread. It gets called when a search is done and new records are set.
    * @param theFoundItems The records that were found.
    */
-  public void setFoundRecords(final Collection<? extends @NonNull R> theFoundItems) {
+  public void setFoundRecords(final Collection<? extends @NotNull R> theFoundItems) {
     model.setNewList(theFoundItems);
     if (model.getSize() > 0) {
       final R selectedRecord = model.getFoundRecord();
@@ -178,14 +176,14 @@ public final class RecordController<R, PK, F extends DBField> implements RecordM
     //noinspection TooBroadScope
     String text = dirtyText.trim();
     try {
-      Collection<@NonNull R> foundItems = findRecordsInField(text, field, searchOption);
+      Collection<@NotNull R> foundItems = findRecordsInField(text, field, searchOption);
       setFoundRecords(foundItems);
     } catch (SQLException e) {
       ErrorReport.reportException(String.format("Find Text in Field %s with %s", field, searchOption), e);
     }
   }
 
-  Collection<@NonNull R> findRecordsInField(final String text, final F field, SearchOption searchOption) throws SQLException {
+  Collection<@NotNull R> findRecordsInField(final String text, final F field, SearchOption searchOption) throws SQLException {
     // If the user has changed the current record, we need to save those changes before searching, because The find
     // will retrieve values from the database, not from what's on-screen.
     loadNewRecord(model.getFoundRecord());
@@ -193,16 +191,12 @@ public final class RecordController<R, PK, F extends DBField> implements RecordM
     if (text.trim().isEmpty()) {
       return dao.getAll(getOrder());
     } else {
-      switch (searchOption) {
-        case findWhole:
-          return dao.findInField(text, field, getOrder());
-        case findAll:
-          return dao.findAllInField(field, getOrder(), StringStuff.splitText(text));
-        case findAny:
-          return dao.findAnyInField(field, getOrder(), StringStuff.splitText(text));
-        default:
-          throw new AssertionError(String.format("Unhandled case: %s", searchOption));
-      }
+      return switch (searchOption) {
+        case findWhole -> dao.findInField(text, field, getOrder());
+        case findAll -> dao.findAllInField(field, getOrder(), StringStuff.splitText(text));
+        case findAny -> dao.findAnyInField(field, getOrder(), StringStuff.splitText(text));
+        default -> throw new AssertionError(String.format("Unhandled case: %s", searchOption));
+      };
     }
   }
 
@@ -215,14 +209,14 @@ public final class RecordController<R, PK, F extends DBField> implements RecordM
     //noinspection TooBroadScope
     String text = dirtyText.trim();
     try {
-      Collection<@NonNull R> foundItems = findRecordsAnywhere(text, searchOption);
+      Collection<@NotNull R> foundItems = findRecordsAnywhere(text, searchOption);
       setFoundRecords(foundItems);
     } catch (SQLException e) {
       ErrorReport.reportException("Find Text anywhere", e);
     }
   }
   
-  Collection<@NonNull R> findRecordsAnywhere(final String text, SearchOption searchOption) throws SQLException {
+  Collection<@NotNull R> findRecordsAnywhere(final String text, SearchOption searchOption) throws SQLException {
     // If the user has changed the current record, we need to save those changes before searching, because The find
     // will retrieve values from the database, not from what's on-screen.
     loadNewRecord(model.getFoundRecord());
@@ -255,7 +249,7 @@ public final class RecordController<R, PK, F extends DBField> implements RecordM
    * @param searchText The text to search for
    * @return A collection of the found records.
    */
-  public Collection<@NonNull R> retrieveNow(final F searchField, final SearchOption searchOption, final String searchText) {
+  public Collection<@NotNull R> retrieveNow(final F searchField, final SearchOption searchOption, final String searchText) {
     try {
       if (searchField.isField()) {
         return findRecordsInField(searchText, searchField, searchOption);
@@ -278,7 +272,7 @@ public final class RecordController<R, PK, F extends DBField> implements RecordM
    * @param selectedRecord The record to delete
    * @throws SQLException Most likely if the record is not found.
    */
-  public void delete(final @NonNull R selectedRecord) throws SQLException {
+  public void delete(final @NotNull R selectedRecord) throws SQLException {
     dao.delete(selectedRecord);
   }
 }

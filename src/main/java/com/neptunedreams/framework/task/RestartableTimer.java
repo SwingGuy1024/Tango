@@ -1,7 +1,6 @@
 package com.neptunedreams.framework.task;
 
 import java.util.concurrent.CountDownLatch;
-import org.checkerframework.checker.nullness.qual.NonNull;
 
 /**
  * Run an operation a single time after a preset interval, with the option of restarting the clock at any time.
@@ -11,7 +10,7 @@ import org.checkerframework.checker.nullness.qual.NonNull;
  * <p>Date: 6/19/20
  * <p>Time: 1:20 AM
  *
- * @author Miguel Mu\u00f1oz
+ * @author Miguel Muñoz
  */
 public final class RestartableTimer {
   private final Thread restartableThread;

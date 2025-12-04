@@ -1,6 +1,6 @@
 package com.neptunedreams.framework.data;
 
-import org.checkerframework.checker.nullness.qual.NonNull;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * <p>Created by IntelliJ IDEA.
@@ -12,5 +12,5 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 public interface RecordSelectionModel<R> {
   
   boolean isRecordDataModified();
-  @NonNull R getCurrentRecord();
+  @NotNull R getCurrentRecord();
 }

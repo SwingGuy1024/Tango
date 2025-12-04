@@ -3,8 +3,9 @@ package com.neptunedreams.framework.task;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.SynchronousQueue;
 import java.util.function.Consumer;
-import org.checkerframework.checker.nullness.qual.NonNull;
-import org.checkerframework.checker.nullness.qual.Nullable;
+
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * This class lets the application search as the user types, but delays the launch of the search until after the user 
@@ -13,7 +14,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
  * The class gets instantiated with a ParameterizedCallable task and a Consumer. For every change in the text of a 
  * text field, the UI calls the {@code feedData()} method, which puts the input (the text) onto the queue and the clock 
  * starts. When any subsequent change gets put on the queue, the previous text gets thrown out, and the clock gets 
- * restarted. When the user stops typing, the the clock runs out. At this point, the QueuedTask puts the data into the 
+ * restarted. When the user stops typing, the clock runs out. At this point, the QueuedTask puts the data into the 
  * ParameterizedCallable task, and calls its {@code call()} method. Then it sends the results to the Consumer.
  * It is the responsibility of the caller to define a ParameterizedCallable task that launches the search function, and
  * a Consumer that sends the search results to the proper user interface component.
@@ -32,20 +33,26 @@ import org.checkerframework.checker.nullness.qual.Nullable;
  * <p>Date: 11/5/17
  * <p>Time: 12:02 AM
  *
- * @author Miguel Mu\u00f1oz
+ * @author Miguel Muñoz
  * @param <I> Input type
  * @param <R> Result type
  */
 @SuppressWarnings("TypeParameterExplicitlyExtendsObject")
-public final class QueuedTask<I extends @NonNull Object, R> {
+public final class QueuedTask<I extends @NotNull Object, R> {
   private final ParameterizedCallable<I, R> callable;
   private final long delayMilliSeconds;
   private final Consumer<R> consumer;
   private final BlockingQueue<I> queue = new SynchronousQueue<>();
 
-  @SuppressWarnings("BoundedWildcard") // The "bounds" expected by this inspection both ? extends R and ? super R
-  public QueuedTask(long delay, ParameterizedCallable<I, R> task, Consumer<R> theConsumer) {
-    delayMilliSeconds = delay;
+  /**
+   * Construct a QueuedTask
+   * @param delay_ms The delay, in milliseconds
+   * @param task The task to perform when the timer times out
+   * @param theConsumer Consumes the result of {@code task}
+   */
+//  @SuppressWarnings("BoundedWildcard") // The "bounds" expected by this inspection both ? extends R and ? super R
+  public QueuedTask(long delay_ms, ParameterizedCallable<I, R> task, Consumer<R> theConsumer) {
+    delayMilliSeconds = delay_ms;
     callable = task;
     consumer = theConsumer;
   }
@@ -75,13 +82,15 @@ public final class QueuedTask<I extends @NonNull Object, R> {
   }
   
   private Runnable createWaitTask() {
-    //noinspection Convert2MethodRef
-    return () -> waitLoop(); // Method reference bypasses nullness checker
+    //noXInspection Convert2MethodRef
+//    return () -> waitLoop(); // Method reference bypasses nullness checker
+    return this::waitLoop; // Method reference bypasses nullness checker
   }
 
   private Runnable createLaunchTask() {
-    //noinspection Convert2MethodRef
-    return () -> launchTaskLoop();
+    //noXInspection Convert2MethodRef
+//    return () -> launchTaskLoop();
+    return this::launchTaskLoop;
   }
 
   // Wait Thread Code
@@ -94,7 +103,7 @@ public final class QueuedTask<I extends @NonNull Object, R> {
     //noinspection InfiniteLoopStatement
     while (true) {
       try {
-        I input = queue.take();
+        I input = queue.take(); // Interruptable
         // Launch the code on the Launch Thread by setting valid input data and interrupting the launchThread.
         callable.setInputData(input);
         launchThread.interrupt();

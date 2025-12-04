@@ -4,18 +4,14 @@ import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import org.checkerframework.checker.initialization.qual.UnderInitialization;
-import org.checkerframework.checker.nullness.qual.EnsuresNonNull;
-//import org.checkerframework.checker.nullness.qual.EnsuresNonNullIf;
-import org.checkerframework.checker.nullness.qual.Nullable;
-//import org.checkerframework.checker.nullness.qual.RequiresNonNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * <p>Created by IntelliJ IDEA.
  * <p>Date: 11/12/17
  * <p>Time: 12:10 PM
  *
- * @author Miguel Mu\u00f1oz
+ * @author Miguel Muñoz
  */
 @SuppressWarnings("RedundantSuppression")
 public abstract class AbstractDatabaseInfo implements DatabaseInfo {
@@ -31,7 +27,7 @@ public abstract class AbstractDatabaseInfo implements DatabaseInfo {
    *                System property.
    */
   @SuppressWarnings("JavaDoc")
-  protected AbstractDatabaseInfo(String homeDir) { // throws IOException {
+  protected AbstractDatabaseInfo(String homeDir) {
     // Specify an empty homeDir to use an imMemory database.
     if (homeDir.isEmpty()) {
       homeDirectory = homeDir;
@@ -67,13 +63,12 @@ public abstract class AbstractDatabaseInfo implements DatabaseInfo {
   }
 
   @SuppressWarnings({"JavaDoc", "HardCodedStringLiteral"})
-  @EnsuresNonNull("connectionSource")
   protected void initialize() throws SQLException {
     connectionSource = connect();
   }
 
   @SuppressWarnings("HardCodedStringLiteral")
-  private void ensureHomeExists(@UnderInitialization AbstractDatabaseInfo this, String databaseHome) { //throws IOException {
+  private void ensureHomeExists(String databaseHome) { //throws IOException {
 //    System.setProperty(DERBY_SYSTEM_HOME, databaseHome);
 //    final String databaseHome = System.getProperty("derby.system.home");
 //    final String databaseHome = props.getProperty(DERBY_SYSTEM_HOME);

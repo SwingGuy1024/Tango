@@ -2,9 +2,9 @@ package com.neptunedreams.framework.data;
 
 import java.sql.SQLException;
 import java.util.Collection;
-//import com.neptunedreams.jobs.data.LeadField;
-import org.checkerframework.checker.nullness.qual.NonNull;
-import org.checkerframework.checker.nullness.qual.Nullable;
+
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * <p>Created by IntelliJ IDEA.
@@ -16,44 +16,39 @@ import org.checkerframework.checker.nullness.qual.Nullable;
 public interface Dao<E, PK, F extends DBField> {
   boolean createTableIfNeeded() throws SQLException;
   
-  Collection<@NonNull E> getAll(@Nullable F orderBy) throws SQLException;
+  Collection<@NotNull E> getAll(@Nullable F orderBy) throws SQLException;
   
-  Collection<@NonNull E> find(String text, @Nullable F orderBy) throws SQLException;
-  Collection<@NonNull E> findAny(@Nullable F orderBy, String... text) throws SQLException;
-  Collection<@NonNull E> findAll(@Nullable F orderBy, String... text) throws SQLException;
+  Collection<@NotNull E> find(String text, @Nullable F orderBy) throws SQLException;
+  Collection<@NotNull E> findAny(@Nullable F orderBy, String... text) throws SQLException;
+  Collection<@NotNull E> findAll(@Nullable F orderBy, String... text) throws SQLException;
 
-  Collection<@NonNull E> findInField(String text, @NonNull F findBy, @Nullable F orderBy) throws SQLException;
-  Collection<@NonNull E> findAnyInField(@NonNull F findBy, @Nullable F orderBy, String... text) throws SQLException;
-  Collection<@NonNull E> findAllInField(@NonNull F findBy, @Nullable F orderBy, String... text) throws SQLException;
-
-//  E newEmptyRecord();
+  Collection<@NotNull E> findInField(String text, @NotNull F findBy, @Nullable F orderBy) throws SQLException;
+  Collection<@NotNull E> findAnyInField(@NotNull F findBy, @Nullable F orderBy, String... text) throws SQLException;
+  Collection<@NotNull E> findAllInField(@NotNull F findBy, @Nullable F orderBy, String... text) throws SQLException;
 
   /**
    * insert or update the entity.
    * @param entity The entity
-//   * @return True if the entity was new and was inserted, false if it updated an existing entry.
    * @throws SQLException Yeah, you know.
    */
-  void update(@NonNull E entity) throws SQLException;
+  void update(@NotNull E entity) throws SQLException;
 
-  void insert(@NonNull E entity) throws SQLException;
+  void insert(@NotNull E entity) throws SQLException;
 
   /**
    * insert or update the provided entity. If the id is 0 or null, it inserts the record. Otherwise it updates it.
    * @param entity The entity to save
    * @throws SQLException Sql exception
    */
-  void insertOrUpdate(@NonNull E entity) throws SQLException;
+  void insertOrUpdate(@NotNull E entity) throws SQLException;
 
-  void delete(@NonNull E entity) throws SQLException;
+  void delete(@NotNull E entity) throws SQLException;
   
   PK getNextId() throws SQLException;
   
-  PK getPrimaryKey(@NonNull E entity);
+  PK getPrimaryKey(@NotNull E entity);
   
   int getTotal() throws SQLException;
 
-  void setPrimaryKey(@NonNull E entity, PK primaryKey);
-  
-//  <T> Collection<T> getTableInfo() throws SQLException;
+  void setPrimaryKey(@NotNull E entity, PK primaryKey);
 }

@@ -153,7 +153,7 @@ public enum TangoUtils {
 
   /**
    * Removes the border on the specified component by calling {@code setBorder(null)}.
-   * The JComponent.setBorder method is improperly annotated. It puts @NonNull on the parameter, which is wrong. This
+   * The JComponent.setBorder method is improperly annotated. It puts @NotNull on the parameter, which is wrong. This
    * method works around that problem. It has to be its own method because you can't annotate an x.setBorder() call.
    *
    * @param component The component

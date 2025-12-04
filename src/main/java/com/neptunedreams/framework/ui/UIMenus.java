@@ -13,8 +13,8 @@ import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 import javax.swing.text.JTextComponent;
 
-import org.checkerframework.checker.nullness.qual.NonNull;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * <p>Created by IntelliJ IDEA.
@@ -23,7 +23,7 @@ import org.checkerframework.checker.nullness.qual.Nullable;
  *
  * @author Miguel Muñoz
  */
-@SuppressWarnings("HardCodedStringLiteral")
+@SuppressWarnings({"HardCodedStringLiteral", "Singleton"})
 public enum UIMenus implements CaretListener {
   Menu();
 //  private Set<JTextComponent> registeredComponents = new HashSet<>();
@@ -91,7 +91,7 @@ public enum UIMenus implements CaretListener {
     owner.removeCaretListener(this);
   }
   
-  private void addCaretListener(@NonNull JTextComponent owner) {
+  private void addCaretListener(@NotNull JTextComponent owner) {
     owner.addCaretListener(this);
   }
   
@@ -110,7 +110,7 @@ public enum UIMenus implements CaretListener {
   @Override
   public void caretUpdate(final CaretEvent e) {
     boolean selectionPresent = e.getDot() != e.getMark();
-    System.out.printf("Selection %b from %d =? %d%n", selectionPresent, e.getDot(), e.getMark());
+//    System.out.printf("Selection %b from %d =? %d%n", selectionPresent, e.getDot(), e.getMark());
     cutAction.setEnabled(selectionPresent);
     copyAction.setEnabled(selectionPresent);
     // Untested

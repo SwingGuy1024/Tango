@@ -10,7 +10,8 @@ import javax.swing.SwingUtilities;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 import javax.swing.text.JTextComponent;
-import org.checkerframework.checker.nullness.qual.Nullable;
+
+import org.jetbrains.annotations.Nullable;
 
 /**
  * Keeps an eye on the selected text and the focused text component.

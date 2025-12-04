@@ -33,7 +33,6 @@ public final class AutoSave implements AWTEventListener {
   private static final int ON_MASK = toExMask(Toolkit.getDefaultToolkit().getMenuShortcutKeyMask());
   private static final int ALL_MASK = ALT_DOWN_MASK | SHIFT_DOWN_MASK | META_DOWN_MASK | CTRL_DOWN_MASK;
 
-  @SuppressWarnings("argument.type.incompatible")
   private AutoSave(Runnable runnable, int seconds) {
     timer = new RestartableTimer(seconds * 1000L, runnable);
     timer.start();
@@ -59,6 +58,7 @@ public final class AutoSave implements AWTEventListener {
   @SuppressWarnings("MagicCharacter")
   private static boolean isPasteKey(AWTEvent awtEvent) {
     KeyEvent keyEvent = (KeyEvent) awtEvent;
+    //noinspection HardCodedStringLiteral
     return (keyEvent.getID() == KEY_PRESSED)
         && (keyEvent.getKeyChar() == 'v')
         && ((keyEvent.getModifiersEx() & ALL_MASK) == ON_MASK);

@@ -16,9 +16,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.JTextComponent;
 
-import org.checkerframework.checker.initialization.qual.UnderInitialization;
-import org.checkerframework.checker.nullness.qual.Nullable;
-import org.checkerframework.checker.nullness.qual.RequiresNonNull;
+import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -33,7 +31,7 @@ import org.jetbrains.annotations.NotNull;
  * @author Miguel Muñoz
  */
 public class FieldIterator {
-//  @MonotonicNonNull
+//  @MonotonicNotNull
   private final List<JTextComponent> componentList;
   private final ListIterator<SearchTermElement> listIterator;
   private Direction direction;
@@ -63,8 +61,7 @@ public class FieldIterator {
     isEmpty = searchTermElements.isEmpty();
   }
 
-  @RequiresNonNull("componentList") // NON-NLS
-  private Set<SearchTermElement> assembleIterator(@UnderInitialization FieldIterator this, String... terms) {
+  private Set<SearchTermElement> assembleIterator(FieldIterator this, String... terms) {
     // pack all Strings into a TreeSet to eliminate duplicates and pre-sort them by length
     TreeSet<String> allTerms = Arrays.stream(terms)
         .map(String::toUpperCase)

@@ -6,7 +6,7 @@
 
 	<groupId>com.neptunedreams</groupId>
 	<artifactId>tango</artifactId>
-	<version>2.0.29-SNAPSHOT</version>
+	<version>3.0.0-SNAPSHOT</version>
 	<name>Tango</name>
 	<packaging>jar</packaging>
 	
@@ -48,12 +48,12 @@
 			<version>1.1</version>
 			<scope>test</scope>
 		</dependency>
-		<!-- Annotations from the Checker Framework: nullness, interning, locking, ... -->
-		<dependency>
-			<groupId>org.checkerframework</groupId>
-			<artifactId>checker-qual</artifactId>
-			<version>3.39.0</version>
-		</dependency>
+		<!--&lt;!&ndash; Annotations from the Checker Framework: nullness, interning, locking, ... &ndash;&gt;-->
+		<!--<dependency>-->
+		<!--	<groupId>org.checkerframework</groupId>-->
+		<!--	<artifactId>checker-qual</artifactId>-->
+		<!--	<version>3.39.0</version>-->
+		<!--</dependency>-->
 		<!-- If using JDK 8, add the following additional dependencies -->
 
 
@@ -80,55 +80,55 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
+        <version>3.8.1</version>
+        <configuration>
 					<fork>true</fork>
 					<source>17</source>
 					<target>17</target>
-					<compilerArgs>
-						<arg>-Xmaxerrs 10000</arg>
-						<arg>-Xmaxwarns 10000</arg>
-						<!--<AsuppressWarnings>uninitialized</AsuppressWarnings>-->
-					</compilerArgs>
-					<annotationProcessorPaths>
-						<path>
-							<groupId>org.checkerframework</groupId>
-							<artifactId>checker</artifactId>
-							<version>3.39.0</version>
-						</path>
-					</annotationProcessorPaths>
-					<annotationProcessors>
-						<!-- Add all the checkers you want to enable here -->
-
-						<!-- Invoke the NullnessChecker at org.checkerframework.checker.nullness.NullnessChecker -->
-						<!-- There are probably other checkers we should invoke. -->
-						<annotationProcessor>org.checkerframework.checker.nullness.NullnessChecker</annotationProcessor>
-					</annotationProcessors>
+					<!--<compilerArgs>-->
+					<!--	<arg>-Xmaxerrs 10000</arg>-->
+					<!--	<arg>-Xmaxwarns 10000</arg>-->
+					<!--	&lt;!&ndash;<AsuppressWarnings>uninitialized</AsuppressWarnings>&ndash;&gt;-->
+					<!--</compilerArgs>-->
+					<!--<annotationProcessorPaths>-->
+					<!--	<path>-->
+					<!--		<groupId>org.checkerframework</groupId>-->
+					<!--		<artifactId>checker</artifactId>-->
+					<!--		<version>3.39.0</version>-->
+					<!--	</path>-->
+					<!--</annotationProcessorPaths>-->
+					<!--<annotationProcessors>-->
+					<!--	&lt;!&ndash; Add all the checkers you want to enable here &ndash;&gt;-->
+          
+					<!--	&lt;!&ndash; Invoke the NullnessChecker at org.checkerframework.checker.nullness.NullnessChecker &ndash;&gt;-->
+					<!--	&lt;!&ndash; There are probably other checkers we should invoke. &ndash;&gt;-->
+					<!--	<annotationProcessor>org.checkerframework.checker.nullness.NullnessChecker</annotationProcessor>-->
+					<!--</annotationProcessors>-->
 					<showWarnings>true</showWarnings>
-					<compilerArgs>
-						<!-- If using JDK 8, use only the two arguments immediately below. -->
-<!--						<arg>-J-Xbootclasspath/p:${errorProneJavac}</arg>-->
-<!--						<arg>-Xbootclasspath/p:${annotatedJdk}</arg>-->
-						<!-- If using JDK 11, remove the two arguments above, remove the
-								 space in the one below, and uncomment it. -->
-						<!-- <arg>-J- -add-opens=jdk.compiler/com.sun.tools.javac.comp=ALL-UNNAMED</arg> -->
+<!--					<compilerArgs>-->
+<!--						&lt;!&ndash; If using JDK 8, use only the two arguments immediately below. &ndash;&gt;-->
+<!--&lt;!&ndash;						<arg>-J-Xbootclasspath/p:${errorProneJavac}</arg>&ndash;&gt;-->
+<!--&lt;!&ndash;						<arg>-Xbootclasspath/p:${annotatedJdk}</arg>&ndash;&gt;-->
+<!--						&lt;!&ndash; If using JDK 11, remove the two arguments above, remove the-->
+<!--								 space in the one below, and uncomment it. &ndash;&gt;-->
+<!--						&lt;!&ndash; <arg>-J- -add-opens=jdk.compiler/com.sun.tools.javac.comp=ALL-UNNAMED</arg> &ndash;&gt;-->
 
-						<!-- Optionally, -Awarns turns type-checking errors into warnings. -->
-<!--						<arg>-Awarns</arg>-->
-						<arg>-Astubs=nullness-stub/</arg>
-<!--						<arg>-Astubs=checkerframework/stubs</arg> &lt;!&ndash; Suggested by https://github.com/typetools/checker-framework/issues/445 &ndash;&gt;-->
-						<arg>-AstubWarnIfNotFound</arg>
-							<arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED</arg>
-							<arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.code=ALL-UNNAMED</arg>
-							<arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.file=ALL-UNNAMED</arg>
-							<arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.main=ALL-UNNAMED</arg>
-							<arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.model=ALL-UNNAMED</arg>
-							<arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.processing=ALL-UNNAMED</arg>
-							<arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.tree=ALL-UNNAMED</arg>
-							<arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED</arg>
-							<arg>-J--add-opens=jdk.compiler/com.sun.tools.javac.comp=ALL-UNNAMED</arg>
-					</compilerArgs>
+<!--						&lt;!&ndash; Optionally, -Awarns turns type-checking errors into warnings. &ndash;&gt;-->
+<!--&lt;!&ndash;						<arg>-Awarns</arg>&ndash;&gt;-->
+<!--						<arg>-Astubs=nullness-stub/</arg>-->
+<!--&lt;!&ndash;						<arg>-Astubs=checkerframework/stubs</arg> &lt;!&ndash; Suggested by https://github.com/typetools/checker-framework/issues/445 &ndash;&gt;&ndash;&gt;-->
+<!--						<arg>-AstubWarnIfNotFound</arg>-->
+<!--							<arg>-J&#45;&#45;add-exports=jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED</arg>-->
+<!--							<arg>-J&#45;&#45;add-exports=jdk.compiler/com.sun.tools.javac.code=ALL-UNNAMED</arg>-->
+<!--							<arg>-J&#45;&#45;add-exports=jdk.compiler/com.sun.tools.javac.file=ALL-UNNAMED</arg>-->
+<!--							<arg>-J&#45;&#45;add-exports=jdk.compiler/com.sun.tools.javac.main=ALL-UNNAMED</arg>-->
+<!--							<arg>-J&#45;&#45;add-exports=jdk.compiler/com.sun.tools.javac.model=ALL-UNNAMED</arg>-->
+<!--							<arg>-J&#45;&#45;add-exports=jdk.compiler/com.sun.tools.javac.processing=ALL-UNNAMED</arg>-->
+<!--							<arg>-J&#45;&#45;add-exports=jdk.compiler/com.sun.tools.javac.tree=ALL-UNNAMED</arg>-->
+<!--							<arg>-J&#45;&#45;add-exports=jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED</arg>-->
+<!--							<arg>-J&#45;&#45;add-opens=jdk.compiler/com.sun.tools.javac.comp=ALL-UNNAMED</arg>-->
+<!--					</compilerArgs>-->
 				</configuration>
-				<version>3.8.1</version>
 			</plugin>
 
 			<!-- This shows as an error in IntelliJ. When I remove the plugin, the project doesn't build. I don't -->

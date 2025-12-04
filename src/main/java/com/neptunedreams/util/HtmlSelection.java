@@ -6,6 +6,8 @@ import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 
+import org.jetbrains.annotations.NotNull;
+
 /**
  * <p>Created by IntelliJ IDEA.
  * <p>Date: 4/20/23
@@ -37,7 +39,7 @@ public class HtmlSelection implements Transferable, ClipboardOwner {
   }
 
   @Override
-  public Object getTransferData(final DataFlavor flavor) throws UnsupportedFlavorException {
+  public @NotNull Object getTransferData(final DataFlavor flavor) throws UnsupportedFlavorException {
     if (flavor.equals(DataFlavor.allHtmlFlavor)) {
       return (data == null) ? "" : data;
     }

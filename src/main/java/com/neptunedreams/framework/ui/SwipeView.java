@@ -21,7 +21,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import javax.swing.plaf.LayerUI;
 
-import org.checkerframework.checker.nullness.qual.NonNull;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
@@ -190,17 +189,17 @@ public final class SwipeView<C extends JComponent> extends LayerUI<C> {
     int scaledWidth = liveComponent.getWidth() * SCALE;
     
     // if the screen size has changed, create new graphics
-    BufferedImage nonNullPriorScreen;
+    BufferedImage NotNullPriorScreen;
     if ((priorScreen == null) || (priorScreen.getWidth() != scaledWidth)) {
       int scaledHeight = liveComponent.getHeight() * SCALE;
-      nonNullPriorScreen = createLocalImage(scaledWidth, scaledHeight);
-      priorScreen = nonNullPriorScreen;
+      NotNullPriorScreen = createLocalImage(scaledWidth, scaledHeight);
+      priorScreen = NotNullPriorScreen;
       finalScreen = createLocalImage(scaledWidth, scaledHeight);
     } else {
-      nonNullPriorScreen = priorScreen;
+      NotNullPriorScreen = priorScreen;
     }
 
-    Graphics2D graphics2D = (Graphics2D) nonNullPriorScreen.getGraphics();
+    Graphics2D graphics2D = (Graphics2D) NotNullPriorScreen.getGraphics();
     graphics2D.scale(SCALE, SCALE);
     liveComponent.paint(graphics2D); // paint the current state of liveComponent into the image
     graphics2D.dispose();
@@ -228,7 +227,7 @@ public final class SwipeView<C extends JComponent> extends LayerUI<C> {
     timer.start();
   }
 
-  private static @NonNull BufferedImage createLocalImage(int width, int height) {
+  private static @NotNull BufferedImage createLocalImage(int width, int height) {
     GraphicsEnvironment graphicsEnvironment = GraphicsEnvironment.getLocalGraphicsEnvironment();
     return graphicsEnvironment.getDefaultScreenDevice().getDefaultConfiguration().createCompatibleImage(width, height);
   }
@@ -288,12 +287,11 @@ public final class SwipeView<C extends JComponent> extends LayerUI<C> {
    * @return An animated action
    */
   public @NotNull Runnable createAnimatedAction(final Runnable operation, final SwipeDirection swipeDirection) {
-    final Runnable fullOperation = switch (swipeDirection) {
+    return switch (swipeDirection) {
       case SWIPE_LEFT -> () -> swipeLeft(operation);
       case SWIPE_RIGHT -> () -> swipeRight(operation);
       default -> throw new AssertionError(String.format("Unsupported Swipe Direction: %s", swipeDirection)); //NON-NLS
     };
-    return fullOperation;
   }
 
   /**
@@ -327,22 +325,23 @@ public final class SwipeView<C extends JComponent> extends LayerUI<C> {
    * per repeat. It's "restricted" because it does not get invoked when the focus is held by a JTextComponent or one of its subclasses. 
    * This is intended only for keystrokes that already have defined actions for JTextComponents, such as the arrow keys.
    * @param key The key value, from constants defined in KeyEvent, such as KeyEvent.VK_X
-   * @param modifiers The modifiers
+   * @param modifierMasks The modifierMasks
    * @param name The name, which should be unique for each KeyStroke action. This name gets used by the InputMap and ActionMap.
    * @param operation The operation to perform
    * @param swipeDirection the swipe direction
    * @see java.awt.event.KeyEvent
    */
+  @SuppressWarnings("MagicConstant")
   public void assignRestrictedRepeatingKeystrokeAction(
       String name,
       int key,
-      int modifiers,
+      int modifierMasks,
       Runnable operation,
       SwipeDirection swipeDirection
   ) {
     final KeyStrokeTracker keyStrokeTracker = new KeyStrokeTracker(operation, swipeDirection);
-    KeyStroke pressedKeyStroke = KeyStroke.getKeyStroke(key, modifiers);
-    KeyStroke releasedKeyStroke = KeyStroke.getKeyStroke(key, modifiers, true);
+    KeyStroke pressedKeyStroke = KeyStroke.getKeyStroke(key, modifierMasks);
+    KeyStroke releasedKeyStroke = KeyStroke.getKeyStroke(key, modifierMasks, true);
     JComponent lastAncestor = Keystrokes.getLastAncestorOf(liveComponent);
     InputMap inputMap = lastAncestor.getInputMap(WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     @NonNls String pressedName = "pressed " + name;

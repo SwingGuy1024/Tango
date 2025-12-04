@@ -14,8 +14,6 @@ import javax.swing.text.JTextComponent;
 import javax.swing.text.Position;
 import javax.swing.text.Utilities;
 
-import org.checkerframework.checker.initialization.qual.UnderInitialization;
-
 /**
  * <p>Implements Standard rules for extending the selection, consistent with the standard
  * behavior for extending the selection in all word processors, browsers, and other text
@@ -37,7 +35,7 @@ import org.checkerframework.checker.initialization.qual.UnderInitialization;
  * @author Miguel Muñoz
  */
 public class StandardCaret extends DefaultCaret {
-  public static final String EDITABLE = "editable";
+  private static final String EDITABLE = "editable";
   // In the event of a double click, these are the positions of the low end and high end
   // of the word that was clicked.
   private int highMark;
@@ -96,7 +94,7 @@ public class StandardCaret extends DefaultCaret {
    * @param tripleClickSelectsParagraph To respond to triple clicks by selecting the full paragraph, set this to true.
    *                                   To use select just the line, set this to false.
    */
-  private void setTripleClickSelectsParagraph(@UnderInitialization StandardCaret this, boolean tripleClickSelectsParagraph) {
+  private void setTripleClickSelectsParagraph(StandardCaret this, boolean tripleClickSelectsParagraph) {
     
     this.tripleClickSelectsParagraph = tripleClickSelectsParagraph;
     if (tripleClickSelectsParagraph) {

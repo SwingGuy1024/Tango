@@ -1,6 +1,6 @@
 package com.neptunedreams.framework.event;
 
-import org.checkerframework.checker.nullness.qual.NonNull;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * We wrap the CurrentRecord in this event class rather than passing it directly because it's a generic type, 
@@ -8,11 +8,11 @@ import org.checkerframework.checker.nullness.qual.NonNull;
  * @param <R> The type of the record.
  */
 public class ChangeRecord<R> {
-  private final @NonNull R newRecord;
-  ChangeRecord(@NonNull R record) {
+  private final @NotNull R newRecord;
+  ChangeRecord(@NotNull R record) {
     newRecord = record;
   }
   
   @SuppressWarnings("WeakerAccess")
-  public @NonNull R getNewRecord() { return newRecord; }
+  public @NotNull R getNewRecord() { return newRecord; }
 }

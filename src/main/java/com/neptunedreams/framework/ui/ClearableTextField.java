@@ -37,8 +37,6 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.plaf.metal.MetalLookAndFeel;
 
-import org.checkerframework.checker.initialization.qual.Initialized;
-import org.checkerframework.checker.nullness.qual.NonNull;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -57,7 +55,7 @@ import org.jetbrains.annotations.Nullable;
 public final class ClearableTextField extends JPanel {
   private static final LineBorder buttonBorder = new LineBorder(Color.lightGray, 1);
 
-  private final @NonNull JTextField textField;
+  private final @NotNull JTextField textField;
   private final JButton button = new JButton();
 
   /**
@@ -85,8 +83,7 @@ public final class ClearableTextField extends JPanel {
     return textField;
   }
 
-  @SuppressWarnings("method.invocation.invalid")
-  private void install(@NonNull JTextField tField) {
+  private void install(@NotNull JTextField tField) {
     add(BorderLayout.CENTER, tField);
     add(BorderLayout.LINE_END, makeClearBox(tField));
     final AncestorListener ancestorListener = new AncestorListener() {
@@ -120,7 +117,7 @@ public final class ClearableTextField extends JPanel {
   }
 
   
-  private JComponent makeClearBox(@NonNull JTextField tField) {
+  private JComponent makeClearBox(@NotNull JTextField tField) {
     button.setBorder(buttonBorder);
     button.setIcon(makeXIcon(tField));
     button.setFocusable(false);
@@ -148,7 +145,7 @@ public final class ClearableTextField extends JPanel {
     tField.requestFocus();
   }
 
-  private Icon makeXIcon(final @NonNull JTextField tField) {
+  private Icon makeXIcon(final @NotNull JTextField tField) {
     return new Icon() {
       private int size = -1;
       
@@ -174,13 +171,11 @@ public final class ClearableTextField extends JPanel {
       }
 
       @Override
-      @Initialized
       public int getIconWidth() {
         return calculateSize();
       }
 
       @Override
-      @Initialized
       public int getIconHeight() {
         return calculateSize();
       }
@@ -210,7 +205,7 @@ public final class ClearableTextField extends JPanel {
     };
   }
   
-  private static @NonNull Insets getInsetsFromBorder(JComponent c) {
+  private static @NotNull Insets getInsetsFromBorder(JComponent c) {
     @Nullable Border border = c.getBorder();
     if (border == null) {
       return new Insets(0, 0, 0, 0);
@@ -223,7 +218,6 @@ public final class ClearableTextField extends JPanel {
    * @param args Args
    * @throws UnsupportedLookAndFeelException for L&F
    */
-  @SuppressWarnings("dereference.of.nullable") // font.getSize(), etc. Font may be null.
   public static void main(String[] args) throws UnsupportedLookAndFeelException {
     UIManager.setLookAndFeel(new MetalLookAndFeel());
     JTextField textField = new JTextField();
@@ -236,14 +230,16 @@ public final class ClearableTextField extends JPanel {
     JButton button = new JButton("Change Font Size");
     button.addActionListener(e -> {
       Font font = textField.getFont();
-          if (font.getSize() == 24) {
-            font = font.deriveFont(12.0f);
-          } else {
-            font = font.deriveFont(24.0f);
-          }
-          textField.setFont(font);
-          frame.getContentPane().revalidate();
-        });
+      if (font != null) { // In practice, the font will never be null, but the getFont() method makes no guarantees.
+        if (font.getSize() == 24) {
+          font = font.deriveFont(12.0f);
+        } else {
+          font = font.deriveFont(24.0f);
+        }
+        textField.setFont(font);
+        frame.getContentPane().revalidate();
+      }
+    });
     frame.add(BorderLayout.PAGE_END, button);
     frame.pack();
     frame.setVisible(true);

@@ -6,7 +6,7 @@ import java.awt.event.FocusListener;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.text.JTextComponent;
-import org.checkerframework.checker.nullness.qual.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * This allows you to show selected text in a field without giving that field the focus. It allows a single field at a time. When you

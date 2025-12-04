@@ -7,6 +7,8 @@ import javax.swing.JComboBox;
 import javax.swing.JList;
 import javax.swing.ListCellRenderer;
 
+import org.checkerframework.checker.nullness.qual.NonNull;
+
 /**
  * <p>Created by IntelliJ IDEA.
  * <p>Date: 12/8/19
@@ -14,7 +16,7 @@ import javax.swing.ListCellRenderer;
  *
  * @author Miguel Muñoz
  */
-public final class EnumComboBox<E extends Enum<E> & DisplayEnum> extends JComboBox<E> {
+public final class EnumComboBox<@NonNull E extends Enum<E> & DisplayEnum> extends JComboBox<E> {
 
   /**
    * Creates an EnumComboBox with the specified values
@@ -34,7 +36,6 @@ public final class EnumComboBox<E extends Enum<E> & DisplayEnum> extends JComboB
     comboBox.setEditable(false);
     ListCellRenderer<Object> r = new DefaultListCellRenderer() {
       @Override
-      @SuppressWarnings("override.param") // This makes no sense. Applies to Object value: "Incompatible parameter type for value."
       public Component getListCellRendererComponent(final JList<?> list, final Object value, final int index, final boolean isSelected, final boolean cellHasFocus) {
         @SuppressWarnings("unchecked")
         N eValue = (N) value;
@@ -49,12 +50,19 @@ public final class EnumComboBox<E extends Enum<E> & DisplayEnum> extends JComboB
   private EnumComboBox() {
     super();
   }
-  
+
+  /**
+   * Returns the selected item. If there is no selected item, returns the first item. Never returns null.
+   * @return The selected item, or the first item if null
+   */
   public E getSelected() {
     // Maybe I can get rid of this unchecked warning by extending ComboBoxModel to add two typed methods to match the
     // two current untyped methods. Then I could use the typed methods here.
     @SuppressWarnings("unchecked")
     final E selectedItem = (E) getModel().getSelectedItem();
+    if (selectedItem == null) {
+      return getModel().getElementAt(0);
+    }
     return selectedItem;
   }
 }
