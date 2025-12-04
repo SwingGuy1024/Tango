@@ -41,6 +41,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
+ * <p>A text field with an X button on one side to clear the field when the user clicks it.</p>
  * <p>Created by IntelliJ IDEA.
  * <p>Date: 7/2/22
  * <p>Time: 2:00 AM

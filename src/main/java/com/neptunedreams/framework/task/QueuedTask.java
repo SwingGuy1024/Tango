@@ -37,7 +37,6 @@ import org.jetbrains.annotations.Nullable;
  * @param <I> Input type
  * @param <R> Result type
  */
-@SuppressWarnings("TypeParameterExplicitlyExtendsObject")
 public final class QueuedTask<I extends @NotNull Object, R> {
   private final ParameterizedCallable<I, R> callable;
   private final long delayMilliSeconds;
@@ -57,6 +56,9 @@ public final class QueuedTask<I extends @NotNull Object, R> {
     consumer = theConsumer;
   }
 
+  /**
+   * Launches the wait Thread.
+   */
   public void launch() {
     final Thread waitThread = new Thread(createWaitTask(), "QueuedTask.waitThread");
     waitThread.setDaemon(true);
@@ -82,14 +84,10 @@ public final class QueuedTask<I extends @NotNull Object, R> {
   }
   
   private Runnable createWaitTask() {
-    //noXInspection Convert2MethodRef
-//    return () -> waitLoop(); // Method reference bypasses nullness checker
-    return this::waitLoop; // Method reference bypasses nullness checker
+    return this::waitLoop;
   }
 
   private Runnable createLaunchTask() {
-    //noXInspection Convert2MethodRef
-//    return () -> launchTaskLoop();
     return this::launchTaskLoop;
   }
 

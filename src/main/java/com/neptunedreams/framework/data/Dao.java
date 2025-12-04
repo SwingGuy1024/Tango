@@ -13,6 +13,7 @@ import org.jetbrains.annotations.Nullable;
  *
  * @author Miguel Muñoz
  */
+@SuppressWarnings("MissingJavadoc")
 public interface Dao<E, PK, F extends DBField> {
   boolean createTableIfNeeded() throws SQLException;
   
@@ -36,7 +37,7 @@ public interface Dao<E, PK, F extends DBField> {
   void insert(@NotNull E entity) throws SQLException;
 
   /**
-   * insert or update the provided entity. If the id is 0 or null, it inserts the record. Otherwise it updates it.
+   * <p>Insert or update the provided entity. If the id is 0 or null, it inserts the record. Otherwise it updates it.</p>
    * @param entity The entity to save
    * @throws SQLException Sql exception
    */

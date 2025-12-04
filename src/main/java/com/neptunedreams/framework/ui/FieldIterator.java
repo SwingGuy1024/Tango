@@ -21,17 +21,17 @@ import org.jetbrains.annotations.NotNull;
 
 /**
  * Used to search for text in a series of text components. Search takes place within a single database result.
- * <p> Note that the {@code hasNext()}, {@code hasPrevious()}, {@code goToNext()} and {@code goToPrevious()} don't behave they way they do
- * in ListIterator. In ListIterator, if I say listIterator.next(), followed by listIterator.previous(), I will get the same item as last
- * time. To avoid this, when we change direction, we throw away the first item in the new direction.
- * <p>Created by IntelliJ IDEA.
- * <p>Date: 4/4/20
- * <p>Time: 7:42 AM
+ * <p>Note that the {@code hasNext()}, {@code hasPrevious()}, {@code goToNext()} and {@code goToPrevious()} don't
+ * behave they way they do in ListIterator. In ListIterator, if I say listIterator.next(), followed by
+ * listIterator.previous(), I will get the same item as last time. To avoid this, when we change direction, we throw
+ * away the first item in the new direction.</p>
+ * <p>Created by IntelliJ IDEA.</p>
+ * <p>Date: 4/4/20</p>
+ * <p>Time: 7:42 AM</p>
  *
  * @author Miguel Muñoz
  */
 public class FieldIterator {
-//  @MonotonicNotNull
   private final List<JTextComponent> componentList;
   private final ListIterator<SearchTermElement> listIterator;
   private Direction direction;
@@ -91,8 +91,10 @@ public class FieldIterator {
   }
 
   /**
-   * Returns true if another match is found in the current page. If the current direction is BACKWARD, sets it to Forward and skips past 
-   * the first entry to avoid returning it twice in a row.  Note that this does not use the logic of a ListIterator.
+   * <p>Returns true if another match is found in the current page. If the current direction is BACKWARD, sets it to
+   * Forward and skips past the first entry to avoid returning it twice in a row.  Note that this does not use the
+   * logic of a ListIterator. (A List Iterator always returns the previously returned item when the user reverses
+   * the direction.)</p>
    * @return true iff a next match exists on the current page.
    */
   public boolean hasNext() {
@@ -106,8 +108,10 @@ public class FieldIterator {
   }
 
   /**
-   * Returns true if a previous match is found in the current page. If the current direction is FORWARD, sets it to BACKWARD and skips past
-   * the first entry to avoid returning it twice in a row. Note that this does not use the logic of a ListIterator.
+   * <p>Returns true if a previous match is found in the current page. If the current direction is FORWARD, sets it to
+   * BACKWARD and skips past the first entry to avoid returning it twice in a row. Note that this does not use the
+   * logic of a ListIterator. (A List Iterator always returns the previously returned item when the user reverses
+   * the direction.)</p>
    * @return true iff a previous match exists on the current page.
    */
   public boolean hasPrevious() {

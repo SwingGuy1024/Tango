@@ -11,7 +11,6 @@ import java.awt.Toolkit;
 import java.awt.image.FilteredImageSource;
 import java.awt.image.ImageProducer;
 import java.awt.image.RGBImageFilter;
-import java.beans.PropertyChangeListener;
 import java.util.function.Supplier;
 import javax.swing.AbstractButton;
 import javax.swing.Action;
