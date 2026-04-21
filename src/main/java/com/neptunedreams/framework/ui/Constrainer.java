@@ -17,6 +17,7 @@ import org.jetbrains.annotations.Range;
  *   ...
  *   JPanel panel = new JPanel(new GridBagLayout());
  *   GridBagConstraints c = new GridBagConstraints();
+ *   c.fill = BOTH;
  *   c.anchor = LINE_START;
  *   panel.add(versionLabel, c);
  *   
@@ -33,7 +34,7 @@ import org.jetbrains.annotations.Range;
  * 
  * <p>With The Constrainer Class, it would look like this:</p>
  * <pre>
- *   import static GridBagConstraints.*;
+ *   import static Constrainer.*;
  *   ...
  *   JPanel panel = new JPanel(new GridBagLayout());
  *   Constrainer c = new Constrainer();
