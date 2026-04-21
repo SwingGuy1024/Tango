@@ -9,7 +9,7 @@ import org.jetbrains.annotations.Range;
 /**
  * <p>This is a much-improved version of GridBagConstraints, which is its base class.</p>
  * <p>This class adds no new fields, but adds several new methods which may be chained. It also
- * changes one default value. The fill member now defaults to BOTH instead of NONE, which is 
+ * changes one default value. The fill member now defaults to BOTH instead of NONE, which is
  * much more useful.</p>
  * <p>Here is an example to show the method chaining in action. With GridBagConstraints, I would write code like this:</p>
  * <pre>
@@ -20,18 +20,18 @@ import org.jetbrains.annotations.Range;
  *   c.fill = BOTH;
  *   c.anchor = LINE_START;
  *   panel.add(versionLabel, c);
- *   
+ *
  *   c.gridy = 1;
  *   c.anchor = CENTER;
  *   c.weightx = 1.0;
  *   panel.add(new JLabel("Find:"), c);
- *   
+ *
  *   c.gridx = 1;
  *   c.gridwidth = 3;
  *   panel.add(new JTextField(15), c);
  *   // ...
  * </pre>
- * 
+ *
  * <p>With The Constrainer Class, it would look like this:</p>
  * <pre>
  *   import static Constrainer.*;
@@ -43,7 +43,48 @@ import org.jetbrains.annotations.Range;
  *   panel.add(new JTextField(15), c.at(1, 1).gridSize(1, 3));
  *   // ...
  * </pre>
- * 
+ * <p>Also, all the methods that take two parameters may also be replaced with single-parameter methods. So
+ * in the example above, when we add the "Find:" label, we only need to change gridy value. So instead
+ * of calling at(0, 1), we could have called gridy(1)</p>
+ * <table>
+ *   <caption>Here is a side-by-side look at the same example:</caption>
+ *   <tr>
+ *     <td><pre>  import static GridBagConstraints.*;</pre></td><td><pre> import static Constrainer.*;</pre></td>
+ *   </tr>
+ *   <tr>
+ *     <td><pre>  ...</pre></td>
+ *   </tr>
+ *   <tr>
+ *     <td><pre>  JPanel panel = new JPanel(new GridBagLayout());</pre></td>
+ *     <td><pre>JPanel panel = new JPanel(new GridBagLayout());</pre></td>
+ *   </tr>
+ *   <tr>
+ *     <td><pre>  GridBagConstraints c = new GridBagConstraints();</pre></td>
+ *     <td><pre>Constrainer c = new Constrainer();</pre></td>
+ *   </tr>
+ *   <tr>
+ *     <td><pre>  c.fill = BOTH;
+ * c.anchor = LINE_START;
+ * panel.add(versionLabel, c);</pre></td>
+ *    <td style="valign: top;"><pre>panel.add(versionLabel, c.anchor(LINE_START));</pre></td>
+ *   </tr>
+ *   <tr>
+ *     <td><pre>  c.gridy = 1;
+ * c.anchor = CENTER;
+ * c.weightx = 1.0;
+ * panel.add(new JLabel("Find:"), c);</pre></td>
+ * <td><pre>panel.add(new JLabel("Find:"), c.at(0, 1).anchor(CENTER).weight(1.0, 0.0));
+ *   <em>or</em>
+ * panel.add(new JLabel("Find:"), c.gridy(1).anchor(CENTER).weightx(1.0));</pre></td>
+ *   </tr>
+ *   <tr>
+ *     <td><pre>  c.gridx = 1;
+ * c.gridwidth = 3;
+ * panel.add(new JTextField(15), c);</pre></td>
+ *     <td><pre>panel.add(new JTextField(15), c.at(1, 1).gridSize(1, 3));</pre></td>
+ *   </tr>
+ * </table>
+ *
  * <p>Created by IntelliJ IDEA.
  * <br>Date: 2/3/25
  * <br>Time: 4:59 PM
