@@ -8,9 +8,9 @@ import org.jetbrains.annotations.Range;
 
 /**
  * <p>This is a much-improved version of GridBagConstraints, which is its base class.</p>
- * <p>This class adds no new fields, but adds several new methods which may be chained. It also
- * changes one default value. The fill member now defaults to BOTH instead of NONE, which is
- * much more useful.</p>
+ * <p>This class adds no new fields, but adds several new methods which may be chained. It also rewrites the
+ * {@code clone()} method to make that chainable too. And it changes one default value. The fill member now 
+ * defaults to BOTH instead of NONE, which is much more useful.</p>
  * <p>Here is an example to show the method chaining in action. With GridBagConstraints, I would write code like this:</p>
  * <pre>
  *   import static GridBagConstraints.*;
@@ -43,9 +43,12 @@ import org.jetbrains.annotations.Range;
  *   panel.add(new JTextField(15), c.at(1, 1).gridSize(1, 3));
  *   // ...
  * </pre>
- * <p>Also, all the methods that take two parameters may also be replaced with single-parameter methods. So
- * in the example above, when we add the "Find:" label, we only need to change gridy value. So instead
- * of calling at(0, 1), we could have called gridy(1)</p>
+ * <p>It also provides four optional two-dimensional methods, to set both dimensions at once. So these…</p>
+ * <p>{@code gridx(5).gridy(6)} can be written as {@code at(5, 6)}</p>
+ * <p>{@code ipadx(5).ipady(6)} can be written as {@code pad(5, 6)}</p>
+ * <p>{@code weightX(5.0).weightY(6.0)} can be written as {@code weight(5.0, 6.0)}</p>
+ * <p>{@code gridWidth(5).gridHeight(6)} can be written as {@code gridSize(5, 6)}</p>
+
  * <table>
  *   <caption>Here is a side-by-side look at the same example:</caption>
  *   <tr>
@@ -73,9 +76,7 @@ import org.jetbrains.annotations.Range;
  * c.anchor = CENTER;
  * c.weightx = 1.0;
  * panel.add(new JLabel("Find:"), c);</pre></td>
- * <td><pre>panel.add(new JLabel("Find:"), c.at(0, 1).anchor(CENTER).weight(1.0, 0.0));
- *   <em>or</em>
- * panel.add(new JLabel("Find:"), c.gridy(1).anchor(CENTER).weightx(1.0));</pre></td>
+ * <td><pre>panel.add(new JLabel("Find:"), c.at(0, 1).anchor(CENTER).weight(1.0, 0.0));</pre>
  *   </tr>
  *   <tr>
  *     <td><pre>  c.gridx = 1;
@@ -105,6 +106,7 @@ public class Constrainer extends GridBagConstraints {
    * <p>Copy Constructor. Use this to make a copy of another instance of Constrainer or GridBagConstraints.</p>
    *
    * @param model The original Constrainer to copy.
+   * @see #clone()
    */
   public Constrainer(final GridBagConstraints model) {
     this();
@@ -118,6 +120,11 @@ public class Constrainer extends GridBagConstraints {
         ;
   }
 
+  /**
+   * Create a clone of this Constrainer, cast as a Constrainer
+   * @return A new Constrainer identical to this Constrainer
+   * @see #Constrainer(GridBagConstraints)
+   */
   @SuppressWarnings("UseOfClone")
   @Override
   public Constrainer clone() {
@@ -455,6 +462,7 @@ public class Constrainer extends GridBagConstraints {
 
   /**
    * Sets the {@code anchor} value to {@code CENTER}, which is one of the absolute values for {@code anchor}.
+   *
    * @return this, for method chaining
    * @see GridBagConstraints#anchor
    * @see GridBagConstraints#CENTER
@@ -563,6 +571,7 @@ public class Constrainer extends GridBagConstraints {
   /**
    * Sets the {@code anchor} value to {@code PAGE_START}, which is one of the orientation relative values for
    * {@code anchor}
+   *
    * @return this, for method chaining
    * @see GridBagConstraints#PAGE_START
    * @see GridBagConstraints#anchor
@@ -665,6 +674,7 @@ public class Constrainer extends GridBagConstraints {
 
   /**
    * Sets the {@code anchor} field to BASELINE, which is one of the baseline relative values for {@code anchor}.
+   *
    * @return this, for method chaining
    * @see GridBagConstraints#BASELINE
    * @see GridBagConstraints#anchor
